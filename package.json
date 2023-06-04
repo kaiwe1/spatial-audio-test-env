@@ -1,18 +1,34 @@
 {
-  "name": "spatial-audio-three",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "vite": "^3.2.3"
-  },
+  "name": "spatial-test-env",
+  "version": "1.0.0",
+  "description": "Shows how to form self-contained components with their own state and user interaction.",
+  "keywords": [
+    "interaction",
+    "pointer-events"
+  ],
+  "main": "src/index.jsx",
   "dependencies": {
-    "dat.gui": "^0.7.9",
-    "three": "^0.149.0"
-  }
+    "@pmndrs/branding": "^0.0.8",
+    "@react-three/drei": "9.66.3",
+    "@react-three/fiber": "8.13.0",
+    "@react-three/rapier": "0.8.2",
+    "@types/three": "0.152.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-scripts": "5.0.1",
+    "three": "0.152.2",
+    "zustand": "^4.3.8"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">1%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
