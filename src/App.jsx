@@ -4,12 +4,20 @@ import { Physics } from "@react-three/rapier"
 import { Ground } from "./Ground"
 import { Player } from "./Player"
 import { Cube, Cubes } from "./Cube"
+import { useControls } from 'leva'
 
 // The original was made by Maksim Ivanow: https://www.youtube.com/watch?v=Lc2JvBXMesY&t=124s
 // This demo needs pointer-lock, that works only if you open it in a new window
 // Controls: WASD + left click
 
 export default function App() {
+  const { distance, elevation, azimuth } = useControls({
+    distance: { value: 10, min: 0, max: 20 },
+    elevation: { value: 45, min: 0, max: 180 },
+    azimuth: { value: 45, min: 0, max: 360 },
+    frequency: {value: 10, min: 0, max: 25 }
+  })
+
   return (
     <KeyboardControls
       map={[
