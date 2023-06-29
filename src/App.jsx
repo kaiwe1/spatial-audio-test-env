@@ -1,15 +1,18 @@
-import React, {useState} from "react"
-import { OrbitControls, Sky, PositionalAudio } from "@react-three/drei"
+import React, { useRef } from "react"
+import { OrbitControls, Sky, PositionalAudio, useHelper } from "@react-three/drei"
 import * as THREE from "three"
+import { PositionalAudioHelper } from 'three/addons/helpers/PositionalAudioHelper.js';
 
 const App = ({started}) => {
+  const positionalAudio = useRef()
+  useHelper(positionalAudio, PositionalAudioHelper)
 
   return (
     <>
       <OrbitControls makeDefault />
 
       {started && (
-        <PositionalAudio url="./audio/piano2.wav" distance={1} autoplay loop/>
+        <PositionalAudio ref={positionalAudio} url="./audio/piano2.wav" distance={1} autoplay loop/>
       )}
 
       <Sky />

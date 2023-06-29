@@ -10,8 +10,8 @@ body,
 }
 
 button {
-  width: 32px;
-  height: 32px;
+  width: 200px;
+  height: 45px;
   color: inherit;
   font: inherit;
   cursor: pointer;
@@ -26,8 +26,6 @@ button {
   align-items: center;
   justify-content: center;
   margin-bottom: 10px;
-  width: auto;
-  height: 45px;
 }
 
 .fullscreen {

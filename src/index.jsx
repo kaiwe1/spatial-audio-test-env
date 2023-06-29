@@ -11,12 +11,17 @@ const Intro = () => {
 
     return (
     <>
+        {/* 3D scene */}
         <Canvas>
             <App started={started} />
         </Canvas>
+        {/* fullscreen */}
         <div className={`fullscreen bg ${started ? "clicked" : ""}`}>
             <button onClick={() => setStarted(true)}>
-                Start
+                Play in VR
+            </button>
+            <button onClick={() => setStarted(true)}>
+                Play in Non-VR
             </button>
         </div>
     </>
