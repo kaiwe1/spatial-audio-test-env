@@ -1,16 +1,15 @@
-import React from "react"
+import React, {useState} from "react"
 import { OrbitControls, Sky, PositionalAudio } from "@react-three/drei"
 import * as THREE from "three"
 
-const App = () => {
-  const [play, setPlay] = useState(false)
+const App = ({started}) => {
 
   return (
     <>
       <OrbitControls makeDefault />
 
-      {play && (
-        <PositionalAudio url="./audio/piano2.wav" distance={1} autoplay />
+      {started && (
+        <PositionalAudio url="./audio/piano2.wav" distance={1} autoplay loop/>
       )}
 
       <Sky />
