@@ -1,27 +1,23 @@
 {
   "name": "spatial-test-env",
   "version": "1.0.0",
-  "description": "Shows how to form self-contained components with their own state and user interaction.",
+  "description": "spatial audio testing in Virtual Reality, implemented by React Three Fiber.",
   "keywords": [
     "interaction",
     "pointer-events"
   ],
   "main": "src/index.jsx",
   "dependencies": {
-    "@pmndrs/branding": "^0.0.8",
     "@react-three/drei": "9.66.3",
     "@react-three/fiber": "8.13.0",
-    "@react-three/rapier": "0.8.2",
     "@types/three": "0.152.0",
-    "leva": "^0.9.35",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-scripts": "5.0.1",
-    "three": "0.152.2",
-    "zustand": "^4.3.8"
+    "three": "0.152.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

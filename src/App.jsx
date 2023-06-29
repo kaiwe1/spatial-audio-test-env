@@ -1,44 +1,44 @@
-import { Canvas } from "@react-three/fiber"
-import { Sky, PointerLockControls, KeyboardControls } from "@react-three/drei"
-import { Physics } from "@react-three/rapier"
-import { Ground } from "./Ground"
-import { Player } from "./Player"
-import { Cube, Cubes } from "./Cube"
-import { useControls } from 'leva'
+import React from "react"
+import { OrbitControls, Sky, PositionalAudio } from "@react-three/drei"
+import * as THREE from "three"
 
-// The original was made by Maksim Ivanow: https://www.youtube.com/watch?v=Lc2JvBXMesY&t=124s
-// This demo needs pointer-lock, that works only if you open it in a new window
-// Controls: WASD + left click
-
-export default function App() {
-  const { distance, elevation, azimuth } = useControls({
-    distance: { value: 10, min: 0, max: 20 },
-    elevation: { value: 45, min: 0, max: 180 },
-    azimuth: { value: 45, min: 0, max: 360 },
-    frequency: {value: 10, min: 0, max: 25 }
-  })
+const App = () => {
+  const [play, setPlay] = useState(false)
 
   return (
-    <KeyboardControls
-      map={[
-        { name: "forward", keys: ["ArrowUp", "w", "W"] },
-        { name: "backward", keys: ["ArrowDown", "s", "S"] },
-        { name: "left", keys: ["ArrowLeft", "a", "A"] },
-        { name: "right", keys: ["ArrowRight", "d", "D"] },
-        { name: "jump", keys: ["Space"] },
-      ]}>
-      <Canvas shadows camera={{ fov: 45 }}>
-        <Sky sunPosition={[100, 20, 100]} />
-        <ambientLight intensity={0.3} />
-        <pointLight castShadow intensity={0.8} position={[100, 100, 100]} />
-        <Physics gravity={[0, -30, 0]}>
-          <Ground />
-          <Player />
-          <Cube position={[0, 0.5, -10]} />
-          <Cubes />
-        </Physics>
-        <PointerLockControls />
-      </Canvas>
-    </KeyboardControls>
+    <>
+      <OrbitControls makeDefault />
+
+      {play && (
+        <PositionalAudio url="./audio/piano2.wav" distance={1} autoplay />
+      )}
+
+      <Sky />
+
+      <ambientLight intensity={0.3} />
+      <directionalLight castShadow intensity={0.7} position={[10, 10, 10]} />
+
+      <mesh castShadow receiveShadow position-x={-2}>
+        <boxGeometry />
+        <meshStandardMaterial color="orange" />
+      </mesh>
+
+      <mesh castShadow receiveShadow position-x={2}>
+        <sphereGeometry />
+        <meshStandardMaterial color="mediumpurple" />
+      </mesh>
+
+      <mesh
+        receiveShadow
+        rotation-x={Math.PI * -0.5}
+        position-y={-1}
+        scale={10}
+      >
+        <planeGeometry />
+        <meshStandardMaterial color="greenyellow" side={THREE.DoubleSide} />
+      </mesh>
+    </>
   )
 }
+
+export default App
