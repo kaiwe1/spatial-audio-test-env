@@ -1,6 +1,6 @@
 # Spatial Audio Testing Environment
 
-Spatial audio virtual testing environment based on **Three.js**
+Spatial audio virtual testing environment based on **React Three Fiber**
 
 ## Goals
 
