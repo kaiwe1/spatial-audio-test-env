@@ -6,7 +6,7 @@ import {
   useHelper,
   useGLTF,
 } from "@react-three/drei"
-import { DoubleSide, DirectionalLightHelper } from "three"
+import { DirectionalLightHelper } from "three"
 import { PositionalAudioHelper } from "three/addons/helpers/PositionalAudioHelper.js"
 import { button, useControls } from "leva"
 import { useEffect } from "react"
@@ -19,31 +19,35 @@ const App = ({ ready }) => {
   useHelper(directionalLight, DirectionalLightHelper)
 
   // control panel
-  const { position, volume } = useControls("audio", {
+  const [{ position, volume }, set] = useControls("audio", () => ({
     position: { value: { x: 0, y: 0, z: 0 }, step: 0.1 },
     volume: { value: 0.5, min: 0, max: 1 },
     play: button(() => positionalAudio.current.play()),
     pause: button(() => positionalAudio.current.pause()),
-  })
+  }))
 
   const { sunPosition } = useControls("environment", {
-    sunPosition: { value: { x: 5, y: 5, z: 5 }, step: 0.1 }
+    sunPosition: { value: { x: 5, y: 5, z: 5 }, step: 0.1 },
   })
 
   // load model
   const boomBox = useGLTF("./model/BoomBox.glb")
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     set({
-  //       position: {x: 5 * Math.random(), y: 5 * Math.random(), z: 5 * Math.random()}
-  //     })
-  //   }, 1000)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      set({
+        position: {
+          x: 10 * (Math.random() - 0.5),
+          y: 10 * Math.random(),
+          z: 10 * (Math.random() - 0.5),
+        },
+      })
+    }, 3000)
 
-  //   return () => {
-  //     clearInterval(timer)
-  //   }
-  // }, [])
+    return () => {
+      clearInterval(timer)
+    }
+  }, [])
 
   return (
     <>
@@ -60,12 +64,23 @@ const App = ({ ready }) => {
           loop
         />
       )}
-      <primitive object={boomBox.scene} position={[position.x, position.y, position.z]} scale={20} rotation-y={Math.PI} />
+      <primitive
+        object={boomBox.scene}
+        position={[position.x, position.y, position.z]}
+        scale={20}
+        rotation-y={Math.PI}
+        onClick={() => console.log("click")}
+      />
 
       <Sky sunPosition={[sunPosition.x, sunPosition.y, sunPosition.z]} />
 
       <ambientLight intensity={0.3} />
-      <directionalLight ref={directionalLight} castShadow intensity={0.7} position={[sunPosition.x, sunPosition.y, sunPosition.z]} />
+      <directionalLight
+        ref={directionalLight}
+        castShadow
+        intensity={0.7}
+        position={[sunPosition.x, sunPosition.y, sunPosition.z]}
+      />
 
       <mesh castShadow receiveShadow position-x={-2}>
         <boxGeometry />
@@ -84,7 +99,7 @@ const App = ({ ready }) => {
         scale={10}
       >
         <planeGeometry />
-        <meshStandardMaterial color="grey" side={DoubleSide} />
+        <meshStandardMaterial color="grey" />
       </mesh>
     </>
   )
