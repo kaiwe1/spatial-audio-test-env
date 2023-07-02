@@ -2,6 +2,12 @@
 
 Spatial audio virtual testing environment based on **React Three Fiber**
 
+## Q
+zustand global state management
+rapier physics
+keyboard control to pop up menu and control player movement.
+useTexture
+
 ## Goals
 
 - VR support (using R3F)
