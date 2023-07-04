@@ -38,7 +38,6 @@ const App = ({ ready }) => {
 
       <BoomBox ready={ready} />
 
-
       <mesh castShadow receiveShadow position-x={-2}>
         <boxGeometry />
         <meshStandardMaterial color="red" />

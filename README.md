@@ -7,6 +7,7 @@ zustand global state management
 rapier physics
 keyboard control to pop up menu and control player movement.
 useTexture
+waveform
 
 ## Goals
 

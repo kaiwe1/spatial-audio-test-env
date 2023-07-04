@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react"
 import { PositionalAudioHelper } from "three/addons/helpers/PositionalAudioHelper.js"
 import { button, useControls } from "leva"
 import { PositionalAudio, useGLTF, useHelper } from "@react-three/drei"
+import { useThree } from "@react-three/fiber"
 import { useClicksStore } from "../store/store"
 
 const BoomBox = ({ ready }) => {
@@ -10,6 +11,7 @@ const BoomBox = ({ ready }) => {
   useHelper(positionalAudio, PositionalAudioHelper)
 
   const increaseClicks = useClicksStore((state) => state.increaseClicks)
+  const clicks = useClicksStore((state) => state.clicks)
 
   const [{ random, interval, position }, set] = useControls("audio", () => ({
     random: true,
@@ -51,10 +53,15 @@ const BoomBox = ({ ready }) => {
     return () => {
       clearInterval(timer)
     }
-  }, [random, interval, ready])
+  }, [random, interval, ready, clicks])
+
+  const info = useThree()
+  console.log(info)
 
   // load model
   const boomBox = useGLTF("./model/BoomBox.glb")
+
+  console.log(positionalAudio)
 
   return (
     <>
@@ -63,7 +70,7 @@ const BoomBox = ({ ready }) => {
           <PositionalAudio
             ref={positionalAudio}
             url="./audio/badcat.mp3"
-            distance={3}
+            distance={1} // https://developer.mozilla.org/en-US/docs/Web/API/PannerNode/refDistance
             autoplay
             loop
           />
@@ -71,7 +78,10 @@ const BoomBox = ({ ready }) => {
             object={boomBox.scene}
             scale={20}
             rotation-y={Math.PI}
-            onClick={() => increaseClicks()}
+            onClick={() => {
+              increaseClicks()
+              randomlySetPosition()
+            }}
           />
         </group>
       )}
