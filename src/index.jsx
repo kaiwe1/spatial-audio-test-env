@@ -4,6 +4,7 @@ import { useState } from "react"
 import App from "./App.jsx"
 import "./style.css"
 import { KeyboardControls } from "@react-three/drei"
+import Stats from "./components/Stats.jsx"
 
 const root = createRoot(document.getElementById("root"))
 
@@ -33,6 +34,9 @@ const Intro = () => {
         <button onClick={() => setReady(true)}>Play in VR</button>
         <button onClick={() => setReady(true)}>Play in Non-VR</button>
       </div>
+
+      {/* stats */}
+      <Stats />
     </>
   )
 }
