@@ -3,7 +3,6 @@ import { useEffect, useRef } from "react"
 import { PositionalAudioHelper } from "three/addons/helpers/PositionalAudioHelper.js"
 import { button, useControls } from "leva"
 import { PositionalAudio, useGLTF, useHelper } from "@react-three/drei"
-import { useThree } from "@react-three/fiber"
 import { useClicksStore } from "../store/store"
 
 const BoomBox = ({ ready }) => {
@@ -55,13 +54,8 @@ const BoomBox = ({ ready }) => {
     }
   }, [random, interval, ready, clicks])
 
-  const info = useThree()
-  console.log(info)
-
   // load model
   const boomBox = useGLTF("./model/BoomBox.glb")
-
-  console.log(positionalAudio)
 
   return (
     <>

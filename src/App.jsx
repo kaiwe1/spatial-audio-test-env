@@ -1,16 +1,12 @@
 import React, { useRef } from "react"
-import {
-  OrbitControls,
-  Sky,
-  useHelper,
-} from "@react-three/drei"
+import { OrbitControls, Sky, useHelper } from "@react-three/drei"
 import { DirectionalLightHelper } from "three"
 import { useControls } from "leva"
 import Menu from "./components/Menu"
 import BoomBox from "./components/BoomBox"
+import Light from "./components/Light"
 
 const App = ({ ready }) => {
-
   // positional audio
   const directionalLight = useRef()
 
@@ -21,20 +17,13 @@ const App = ({ ready }) => {
     sunPosition: { value: { x: 5, y: 5, z: 5 }, step: 0.1 },
   })
 
-
   return (
     <>
       <OrbitControls makeDefault />
 
       <Sky sunPosition={[sunPosition.x, sunPosition.y, sunPosition.z]} />
 
-      <ambientLight intensity={0.3} />
-      <directionalLight
-        ref={directionalLight}
-        castShadow
-        intensity={0.7}
-        position={[sunPosition.x, sunPosition.y, sunPosition.z]}
-      />
+      <Light position={sunPosition} ref={directionalLight} />
 
       <BoomBox ready={ready} />
 
@@ -48,12 +37,7 @@ const App = ({ ready }) => {
         <meshStandardMaterial color="mediumpurple" />
       </mesh>
 
-      <mesh
-        receiveShadow
-        rotation-x={Math.PI * -0.5}
-        position-y={-1}
-        scale={10}
-      >
+      <mesh receiveShadow rotation-x={Math.PI * -0.5} position-y={-1} scale={10}>
         <planeGeometry />
         <meshStandardMaterial color="grey" />
       </mesh>
