@@ -5,9 +5,9 @@ import { useControls } from "leva"
 import Menu from "./components/Menu"
 import BoomBox from "./components/BoomBox"
 import Light from "./components/Light"
+import Ground from "./components/Ground"
 
-const App = ({ ready }) => {
-  // positional audio
+const App = () => {
   const directionalLight = useRef()
 
   useHelper(directionalLight, DirectionalLightHelper)
@@ -19,13 +19,10 @@ const App = ({ ready }) => {
 
   return (
     <>
-      <OrbitControls makeDefault />
-
+      {/* <OrbitControls makeDefault /> */}
       <Sky sunPosition={[sunPosition.x, sunPosition.y, sunPosition.z]} />
-
       <Light position={sunPosition} ref={directionalLight} />
-
-      <BoomBox ready={ready} />
+      <BoomBox />
 
       <mesh castShadow receiveShadow position-x={-2}>
         <boxGeometry />
@@ -37,10 +34,7 @@ const App = ({ ready }) => {
         <meshStandardMaterial color="mediumpurple" />
       </mesh>
 
-      <mesh receiveShadow rotation-x={Math.PI * -0.5} position-y={-1} scale={10}>
-        <planeGeometry />
-        <meshStandardMaterial color="grey" />
-      </mesh>
+      <Ground />
 
       <Menu />
     </>

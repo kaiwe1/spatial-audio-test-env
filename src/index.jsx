@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber"
 import { useState } from "react"
 import App from "./App.jsx"
 import "./style.css"
-import { KeyboardControls } from "@react-three/drei"
+import { KeyboardControls, PointerLockControls } from "@react-three/drei"
 import Stats from "./components/Stats.jsx"
 
 const root = createRoot(document.getElementById("root"))
@@ -23,11 +23,14 @@ const Intro = () => {
   return (
     <>
       {/* 3D scene */}
-      <KeyboardControls map={map}>
-        <Canvas shadows>
-          <App ready={ready} />
-        </Canvas>
-      </KeyboardControls>
+      {ready && (
+        <KeyboardControls map={map}>
+          <Canvas shadows>
+            <PointerLockControls />
+            <App />
+          </Canvas>
+        </KeyboardControls>
+      )}
 
       {/* fullscreen */}
       <div className={`fullscreen bg ${ready ? "ready" : ""}`}>

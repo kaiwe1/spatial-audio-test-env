@@ -1,11 +1,11 @@
 import { Html, useKeyboardControls } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import { useControls } from 'leva'
 import React from 'react'
 import { useState } from 'react'
+import { useScoreStore } from '../store/store'
 
 const Menu = () => {
-  const [score, setScore] = useState(100)
+  const score = useScoreStore(state => state.score)
   const [, get] = useKeyboardControls()
   const [open, setOpen] = useState(false)
   const [last, setLast] = useState(false)
@@ -32,7 +32,7 @@ const Menu = () => {
                 </div>
                 <div className="menu-item">
                     <h3>Objective evaluation: </h3>
-                    <div>In 30s, you click {}</div>
+                    <div>You have {score} score!</div>
                 </div>
             </div>
         </div>
