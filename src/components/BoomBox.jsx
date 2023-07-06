@@ -19,7 +19,8 @@ const BoomBox = () => {
   const clockRef = useRef(new THREE.Clock())
 
   // control panel
-  const [{ random, interval, position }, set] = useControls("audio", () => ({
+  const [{ audioType, random, interval, position }, set] = useControls("audio", () => ({
+    audioType: { value: "positionalAudio", options: ["positionalAudio", "stereo", "mono"]},
     random: true,
     interval: { value: 3000, min: 1000, max: 10000 },
     position: { value: { x: 0, y: 0, z: 0 }, step: 0.1 },

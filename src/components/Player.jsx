@@ -5,11 +5,10 @@ import React, { useRef } from 'react'
 import * as THREE from "three"
 import Gun from './Gun'
 
-const SPEED = 2
+const SPEED = 1.5
 const direction = new THREE.Vector3()
 const frontVector = new THREE.Vector3()
 const sideVector = new THREE.Vector3()
-const rotation = new THREE.Vector3()
 
 const Player = () => {
   const ref = useRef()
@@ -34,9 +33,8 @@ const Player = () => {
       ref.current.setLinvel({ x: direction.x, y: velocity.y, z: direction.z })
 
       // update gun
-      console.log(gunRef.current)
       gunRef.current?.rotation.copy(state.camera.rotation)
-      gunRef.current?.position.copy(state.camera.position).add(state.camera.getWorldDirection(rotation).multiplyScalar(1))
+      gunRef.current?.position.copy(state.camera.position)
     }
   })
 

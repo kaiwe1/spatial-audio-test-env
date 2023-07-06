@@ -5,7 +5,7 @@ const Gun = React.forwardRef(({}, ref) => {
   const gun = useGLTF("./model/valorant_vandal_with_hands_and_animations.glb")
 
   return (
-    <primitive ref={ref} object={gun.scene} />
+    <primitive ref={ref} object={gun.scene} scale={[1, 1, -1]}/>
   )
 })
 
