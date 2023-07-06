@@ -5,6 +5,7 @@ import App from "./App.jsx"
 import "./style.css"
 import { KeyboardControls, PointerLockControls } from "@react-three/drei"
 import Stats from "./components/Stats.jsx"
+import { Suspense } from "react"
 
 const root = createRoot(document.getElementById("root"))
 
@@ -13,7 +14,7 @@ const map = [
   { name: "backward", keys: ["ArrowDown", "s", "S"] },
   { name: "left", keys: ["ArrowLeft", "a", "A"] },
   { name: "right", keys: ["ArrowRight", "d", "D"] },
-  { name: "jump", keys: ["Space"] },
+  // { name: "jump", keys: ["Space"] },
   { name: "menu", keys: ["M", "m"] },
 ]
 
@@ -26,8 +27,7 @@ const Intro = () => {
       {ready && (
         <KeyboardControls map={map}>
           <Canvas shadows>
-            <PointerLockControls />
-            <App />
+              <App />
           </Canvas>
         </KeyboardControls>
       )}
