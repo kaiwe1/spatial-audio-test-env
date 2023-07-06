@@ -17,14 +17,19 @@ const App = () => {
   useHelper(directionalLight, DirectionalLightHelper)
 
   // control panel
+  const { controlsType } = useControls("controls", {
+    controlsType: { value: "pointerLock", options: ["pointerLock", "orbit"]}
+  })
+  
   const { sunPosition } = useControls("environment", {
     sunPosition: { value: { x: 5, y: 5, z: 5 }, step: 0.1 },
   })
 
+
   return (
     <>
-      {/* <OrbitControls makeDefault /> */}
-      <PointerLockControls />
+      { controlsType === "orbit" && <OrbitControls makeDefault />}
+      { controlsType === "pointerLock" && <PointerLockControls />}
 
       <Sky sunPosition={[sunPosition.x, sunPosition.y, sunPosition.z]} />
       <Light position={sunPosition} ref={directionalLight} />
@@ -35,7 +40,7 @@ const App = () => {
         <Cube />
         <Sphere />
         <Ground />
-        <Player />
+        { controlsType === "pointerLock" && <Player /> }
       </Physics>
 
       <Menu />

@@ -3,6 +3,7 @@ import { useKeyboardControls } from '@react-three/drei'
 import { RigidBody, CapsuleCollider } from '@react-three/rapier'
 import React, { useRef } from 'react'
 import * as THREE from "three"
+import Gun from './Gun'
 
 const SPEED = 2
 const direction = new THREE.Vector3()
@@ -13,6 +14,8 @@ const rotation = new THREE.Vector3()
 const Player = () => {
   const ref = useRef()
   const [, get] = useKeyboardControls()
+
+  const gunRef = useRef()
 
   useFrame((state) => {
     const { forward, backward, left, right } = get()
@@ -29,6 +32,11 @@ const Player = () => {
       sideVector.set(left - right, 0, 0)
       direction.subVectors(frontVector, sideVector).normalize().multiplyScalar(SPEED).applyEuler(state.camera.rotation)
       ref.current.setLinvel({ x: direction.x, y: velocity.y, z: direction.z })
+
+      // update gun
+      console.log(gunRef.current)
+      gunRef.current?.rotation.copy(state.camera.rotation)
+      gunRef.current?.position.copy(state.camera.position).add(state.camera.getWorldDirection(rotation).multiplyScalar(1))
     }
   })
 
@@ -37,6 +45,7 @@ const Player = () => {
       <RigidBody ref={ref} colliders={false} mass={1} type='dynamic' position={[0, 2, 2]} enabledRotations={[false, false, false]}>
         <CapsuleCollider args={[0.25, 0.5]} />
       </RigidBody>
+      <Gun ref={gunRef} />
     </>
   )
 }

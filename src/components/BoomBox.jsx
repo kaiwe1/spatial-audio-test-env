@@ -50,11 +50,9 @@ const BoomBox = () => {
     })
   }
 
-  
-  // randomly set audio position
+  // randomly set audio position and start clock
   useEffect(() => {
     let timer
-    // if random are true, randomly set audio position.
     if (random) {
       timer = setInterval(() => {
         if (clockRef.current.getElapsedTime() > 3) {
@@ -84,7 +82,7 @@ const BoomBox = () => {
     randomlySetPosition()
     const score = calculateScore()
     increaseScore(score)
-    console.log(`Score: ${score}`)
+
     // reset clock
     clockRef.current = new THREE.Clock() 
     clockRef.current.start()
@@ -101,8 +99,8 @@ const BoomBox = () => {
           loop
         />
         <primitive
-          rotation-y={Math.PI}
           object={boomBox.scene}
+          rotation-y={Math.PI}
           scale={20}
           onClick={handleClick}
         />
