@@ -4,7 +4,8 @@ import { PositionalAudioHelper } from "three/addons/helpers/PositionalAudioHelpe
 import { button, useControls } from "leva"
 import { PositionalAudio, useGLTF, useHelper } from "@react-three/drei"
 import { useClicksStore, useScoreStore } from "../store/store"
-import { useThree } from "@react-three/fiber"
+import * as THREE from "three"
+
 
 // BoomBox model bind to positional audio
 const BoomBox = () => {
@@ -15,7 +16,7 @@ const BoomBox = () => {
   const clicks = useClicksStore((state) => state.clicks)
   const increaseScore = useScoreStore(state => state.increaseScore)
 
-  const { clock } = useThree()
+  const clockRef = useRef(new THREE.Clock())
 
   // control panel
   const [{ random, interval, position }, set] = useControls("audio", () => ({
@@ -49,12 +50,21 @@ const BoomBox = () => {
     })
   }
 
+  
   // randomly set audio position
   useEffect(() => {
     let timer
     // if random are true, randomly set audio position.
     if (random) {
-      timer = setInterval(randomlySetPosition, interval)
+      timer = setInterval(() => {
+        if (clockRef.current.getElapsedTime() > 3) {
+          clockRef.current = new THREE.Clock()
+        }
+        if (!clockRef.current.running) {
+          clockRef.current.start()
+        }
+        randomlySetPosition()
+      }, interval)
     }
 
     return () => {
@@ -66,7 +76,18 @@ const BoomBox = () => {
   const boomBox = useGLTF("./model/BoomBox.glb")
 
   const calculateScore = () => {
-    return clock.elapsedTime - lastTime
+    return Number((3 - clockRef.current.getElapsedTime()).toFixed(2))
+  }
+
+  const handleClick = () => {
+    increaseClicks()
+    randomlySetPosition()
+    const score = calculateScore()
+    increaseScore(score)
+    console.log(`Score: ${score}`)
+    // reset clock
+    clockRef.current = new THREE.Clock() 
+    clockRef.current.start()
   }
 
   return (
@@ -83,10 +104,7 @@ const BoomBox = () => {
           rotation-y={Math.PI}
           object={boomBox.scene}
           scale={20}
-          onClick={() => {
-            increaseClicks()
-            randomlySetPosition()
-          }}
+          onClick={handleClick}
         />
       </group>
     </>

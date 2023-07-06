@@ -145,3 +145,4 @@ dist
 .yarn/unplugged
 .yarn/build-state.yml
 
+.vercel

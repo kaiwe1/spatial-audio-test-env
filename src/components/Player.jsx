@@ -34,8 +34,8 @@ const Player = () => {
 
   return (
     <>
-      <RigidBody ref={ref} colliders={false} mass={1} type='dynamic' position={[0, 2, 2]}>
-        <CapsuleCollider args={[0.5, 0.5]} />
+      <RigidBody ref={ref} colliders={false} mass={1} type='dynamic' position={[0, 2, 2]} enabledRotations={[false, false, false]}>
+        <CapsuleCollider args={[0.25, 0.5]} />
       </RigidBody>
     </>
   )
