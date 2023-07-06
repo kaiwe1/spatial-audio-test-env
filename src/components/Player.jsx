@@ -4,7 +4,7 @@ import { RigidBody, CapsuleCollider } from '@react-three/rapier'
 import React, { useRef } from 'react'
 import * as THREE from "three"
 
-const SPEED = 1
+const SPEED = 2
 const direction = new THREE.Vector3()
 const frontVector = new THREE.Vector3()
 const sideVector = new THREE.Vector3()
@@ -34,8 +34,8 @@ const Player = () => {
 
   return (
     <>
-      <RigidBody ref={ref} colliders={false} mass={1} type='dynamic' position={[0, 5, 0]}>
-        <CapsuleCollider args={[0.75, 0.5]} />
+      <RigidBody ref={ref} colliders={false} mass={1} type='dynamic' position={[0, 2, 2]}>
+        <CapsuleCollider args={[0.5, 0.5]} />
       </RigidBody>
     </>
   )

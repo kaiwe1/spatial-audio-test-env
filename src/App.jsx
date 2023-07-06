@@ -8,6 +8,8 @@ import Light from "./components/Light"
 import Ground from "./components/Ground"
 import { Physics } from "@react-three/rapier"
 import Player from "./components/Player"
+import Cube from "./components/Cube"
+import Sphere from "./components/Sphere"
 
 const App = () => {
   const directionalLight = useRef()
@@ -29,20 +31,11 @@ const App = () => {
 
       <BoomBox />
 
-      <Physics gravity={[0, -30, 0]}>
-        <mesh castShadow receiveShadow position-x={-2}>
-          <boxGeometry />
-          <meshStandardMaterial color="red" />
-        </mesh>
-
-        <mesh castShadow receiveShadow position-x={2}>
-          <sphereGeometry />
-          <meshStandardMaterial color="mediumpurple" />
-        </mesh>
-
-        <Player />
-
+      <Physics gravity={[0, -3, 0]}>
+        <Cube />
+        <Sphere />
         <Ground />
+        <Player />
       </Physics>
 
       <Menu />
