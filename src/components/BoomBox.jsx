@@ -5,19 +5,20 @@ import { button, useControls } from "leva"
 import { PositionalAudio, useGLTF, useHelper } from "@react-three/drei"
 import { useClicksStore, useScoreStore } from "../store/store"
 import * as THREE from "three"
-
+import { calculateScore } from "../utils"
+import { useThree } from "@react-three/fiber"
 
 // BoomBox model bind to positional audio
 const BoomBox = () => {
   const positionalAudio = useRef()
   useHelper(positionalAudio, PositionalAudioHelper)
-
   const increaseClicks = useClicksStore((state) => state.increaseClicks)
   const clicks = useClicksStore((state) => state.clicks)
   const increaseScore = useScoreStore(state => state.increaseScore)
-
   const clockRef = useRef(new THREE.Clock())
-
+  const boomBox = useGLTF("./model/BoomBox.glb")
+  const { camera } = useThree()
+  console.log(camera)
   // control panel
   const [{ audioType, random, interval, position }, set] = useControls("audio", () => ({
     audioType: { value: "positionalAudio", options: ["positionalAudio", "stereo", "mono"]},
@@ -41,16 +42,6 @@ const BoomBox = () => {
     }),
   }))
 
-  const randomlySetPosition = () => {
-    set({
-      position: {
-        x: 10 * (Math.random() - 0.5),
-        y: 10 * Math.random(),
-        z: 10 * (Math.random() - 0.5),
-      },
-    })
-  }
-
   // randomly set audio position and start clock
   useEffect(() => {
     let timer
@@ -62,6 +53,7 @@ const BoomBox = () => {
         if (!clockRef.current.running) {
           clockRef.current.start()
         }
+
         randomlySetPosition()
       }, interval)
     }
@@ -71,20 +63,20 @@ const BoomBox = () => {
     }
   }, [random, interval, clicks])
 
-  // load model
-  const boomBox = useGLTF("./model/BoomBox.glb")
-
-  const calculateScore = () => {
-    return Number((3 - clockRef.current.getElapsedTime()).toFixed(2))
+  const randomlySetPosition = () => {
+    set({
+      position: {
+        x: 10 * (Math.random() - 0.5),
+        y: 10 * Math.random(),
+        z: 10 * (Math.random() - 0.5),
+      },
+    })
   }
 
   const handleClick = () => {
     increaseClicks()
     randomlySetPosition()
-    const score = calculateScore()
-    increaseScore(score)
-
-    // reset clock
+    increaseScore(calculateScore(clockRef.current.getElapsedTime()))
     clockRef.current = new THREE.Clock() 
     clockRef.current.start()
   }
@@ -92,13 +84,16 @@ const BoomBox = () => {
   return (
     <>
       <group position={[position.x, position.y, position.z]}>
-        <PositionalAudio
-          ref={positionalAudio}
-          url="./audio/badcat.mp3"
-          distance={1}
-          autoplay
-          loop
-        />
+        {
+          audioType === 'positionalAudio' && 
+          <PositionalAudio
+            ref={positionalAudio}
+            url="./audio/badcat.mp3"
+            distance={1}
+            autoplay
+            loop
+          />
+        }
         <primitive
           object={boomBox.scene}
           rotation-y={Math.PI}
