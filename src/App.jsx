@@ -17,12 +17,12 @@ const App = () => {
   useHelper(directionalLight, DirectionalLightHelper)
 
   // control panel
-  const { controlsType } = useControls("controls", {
-    controlsType: { value: "pointerLock", options: ["pointerLock", "orbit"]}
+  const { controlsType } = useControls("Controls", {
+    controlsType: { label:"Control Type", value: "pointerLock", options: ["pointerLock", "orbit"]}
   })
   
-  const { sunPosition } = useControls("environment", {
-    sunPosition: { value: { x: 5, y: 5, z: 5 }, step: 0.1 },
+  const { sunPosition } = useControls("Environment", {
+    sunPosition: { label: "Sun Position", value: { x: 5, y: 5, z: 5 }, step: 0.1 },
   })
 
 
