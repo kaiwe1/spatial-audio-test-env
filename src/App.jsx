@@ -13,8 +13,8 @@ import Sphere from "./components/Sphere"
 
 const App = () => {
   const directionalLight = useRef()
-
   useHelper(directionalLight, DirectionalLightHelper)
+  
 
   // control panel
   const { controlsType } = useControls("Controls", {
@@ -24,7 +24,6 @@ const App = () => {
   const { sunPosition } = useControls("Environment", {
     sunPosition: { label: "Sun Position", value: { x: 5, y: 5, z: 5 }, step: 0.1 },
   })
-
 
   return (
     <>

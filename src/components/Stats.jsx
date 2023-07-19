@@ -1,11 +1,12 @@
 import React from 'react'
-import { useClickStore, useScoreStore, useRoundStore, useTimeStore } from "../store/store"
+import { useClickStore, useScoreStore, useRoundStore, useTimeStore, useAudioStore } from "../store/store"
 
 const Stats = () => {
   const click = useClickStore((state) => state.click)
   const score = useScoreStore((state) => state.score)
   const round = useRoundStore((state) => state.round)
   const time = useTimeStore((state) => state.time)
+  const audioType = useAudioStore((state) => state.audioType)
 
   return (
     <div className='stats'>
@@ -13,7 +14,7 @@ const Stats = () => {
         Click: { click } | Score: { score.toFixed(2) }  
       </div>
       <div className="stats-round">
-        Round: { round }
+        Round: { round } | Type: { audioType }
       </div>
       <div className="stats-time">
         Time Left: { time }

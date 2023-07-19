@@ -15,7 +15,6 @@ const map = [
   { name: "backward", keys: ["ArrowDown", "s", "S"] },
   { name: "left", keys: ["ArrowLeft", "a", "A"] },
   { name: "right", keys: ["ArrowRight", "d", "D"] },
-  // { name: "jump", keys: ["Space"] },
   { name: "menu", keys: ["M", "m"] },
 ]
 
@@ -31,7 +30,6 @@ const Intro = () => {
     if (response.credential) {
       const decoded = jwtDecode(response.credential);
       setName(decoded.name)
-      console.log(decoded);
     }
     setLogged(true)
   }
