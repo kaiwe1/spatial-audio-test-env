@@ -1,106 +1,55 @@
 import React from "react"
 import { useEffect, useRef, useState } from "react"
 import { PositionalAudioHelper } from "three/addons/helpers/PositionalAudioHelper.js"
-import { button, useControls } from "leva"
 import { PositionalAudio, useGLTF, useHelper } from "@react-three/drei"
-import { useClickStore, useScoreStore } from "../store/store"
+import { useClickStore, useScoreStore, useAudioStore } from "../store/store"
 import * as THREE from "three"
 import { calculateScore } from "../utils"
 import Audio from "./Audio"
-import { AudioType } from "../consts"
+import { AudioType, INTERVAL } from "../consts"
 
 // BoomBox model bind to positional audio
 const BoomBox = () => {
+  const clockRef = useRef(new THREE.Clock())
   const positionalAudio = useRef()
   const audio = useRef()
-  const [play, setPlay] = useState(true)
-
-  const increaseClick = useClickStore((state) => state.increaseClick)
-  const click = useClickStore((state) => state.click)
+  const [position, setPosition] = useState({ x: 0, y: 0, z: 0 })
+  const { click, increaseClick} = useClickStore((state) => ({ increaseClick: state.increaseClick, click: state.click}))
   const increaseScore = useScoreStore((state) => state.increaseScore)
-
-  const clockRef = useRef(new THREE.Clock())
-
+  const audioType = useAudioStore((state) => state.audioType)
   const boomBox = useGLTF("./model/BoomBox.glb")
-
   useHelper(positionalAudio, PositionalAudioHelper)
 
-  // control panel
-  const [{ audioType, random, interval, position }, set] = useControls("Audio", () => ({
-    audioType: {
-      label: "Audio Type",
-      value: AudioType.STEREO,
-      options: {
-        "Positional Audio": AudioType.POSITIONAL,
-        "Stereo Audio": AudioType.STEREO,
-        "Mono Audio": AudioType.MONO,
-      },
-    },
-    random: { label: "Random Position", value: false },
-    interval: { label: "Time Interval", value: 3000, min: 1000, max: 10000 },
-    position: { label: "Audio Position", value: { x: 0, y: 0, z: 0 }, step: 0.1 },
-    volume: {
-      label: "Audio Volume",
-      value: 0.5,
-      min: 0,
-      max: 1,
-      onChange: (v) => positionalAudio.current?.setVolume(v),
-    },
-    play: button(() => {
-      if (audioType === AudioType.POSITIONAL) {
-        positionalAudio.current?.play()
-      } else {
-        audio.current?.play()
-      }
-      setPlay(true)
-    }),
-    pause: button(() => {
-      if (audioType === AudioType.POSITIONAL) {
-        positionalAudio.current?.pause()
-      } else {
-        audio.current?.pause()
-      }
-      setPlay(false)
-    }),
-  }))
-
-  // randomly set audio position and start clock
   useEffect(() => {
     let timer
-    if (random && play) {
-      timer = setInterval(() => {
-        if (clockRef.current.getElapsedTime() > 3) {
-          clockRef.current = new THREE.Clock()
-        }
-        if (!clockRef.current.running) {
-          clockRef.current.start()
-        }
-
-        randomlySetPosition()
-      }, interval)
-    }
+    timer = setInterval(() => {
+      resetClock()
+      // randomlySetPosition()
+    }, INTERVAL)
 
     return () => {
       clearInterval(timer)
     }
-  }, [random, interval, click])
+  }, [click])
 
   const randomlySetPosition = () => {
-    set({
-      position: {
-        x: 10 * (Math.random() - 0.5),
-        y: 10 * Math.random(),
-        z: 10 * (Math.random() - 0.5),
-      },
+    setPosition({
+      x: 10 * (Math.random() - 0.5),
+      y: 10 * Math.random(),
+      z: 10 * (Math.random() - 0.5),
     })
+  }
+
+  const resetClock = () => {
+    clockRef.current = new THREE.Clock()
+    clockRef.current.start()
   }
 
   const handleClick = () => {
     increaseClick()
     randomlySetPosition()
     increaseScore(calculateScore(clockRef.current.getElapsedTime()))
-    clockRef.current = new THREE.Clock()
-    clockRef.current.start()
+    resetClock()
   }
 
   return (

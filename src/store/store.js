@@ -24,7 +24,7 @@ export const useTimeStore = create((set) => ({
   setTime: (time) => set(() => ({ time }))
 }))
 
-export const useAudioStore = create(() => ({
+export const useAudioStore = create((set) => ({
   audioType: AudioType.POSITIONAL,
   setAudioType: (type) => set(() => ({ audioType: type}))
 }))
