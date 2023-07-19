@@ -3,10 +3,11 @@ import { useEffect, useRef, useState } from "react"
 import { PositionalAudioHelper } from "three/addons/helpers/PositionalAudioHelper.js"
 import { button, useControls } from "leva"
 import { PositionalAudio, useGLTF, useHelper } from "@react-three/drei"
-import { useClicksStore, useScoreStore } from "../store/store"
+import { useClickStore, useScoreStore } from "../store/store"
 import * as THREE from "three"
 import { calculateScore } from "../utils"
 import Audio from "./Audio"
+import { AudioType } from "../consts"
 
 // BoomBox model bind to positional audio
 const BoomBox = () => {
@@ -14,24 +15,28 @@ const BoomBox = () => {
   const audio = useRef()
   const [play, setPlay] = useState(true)
 
-  const increaseClicks = useClicksStore((state) => state.increaseClicks)
-  const clicks = useClicksStore((state) => state.clicks)
-  const increaseScore = useScoreStore(state => state.increaseScore)
-  
+  const increaseClick = useClickStore((state) => state.increaseClick)
+  const click = useClickStore((state) => state.click)
+  const increaseScore = useScoreStore((state) => state.increaseScore)
+
   const clockRef = useRef(new THREE.Clock())
-  
+
   const boomBox = useGLTF("./model/BoomBox.glb")
-  
+
   useHelper(positionalAudio, PositionalAudioHelper)
 
   // control panel
   const [{ audioType, random, interval, position }, set] = useControls("Audio", () => ({
-    audioType: { 
-      label: "Audio Type", 
-      value: "stereo", 
-      options: ["positionalAudio", "stereo", "mono"],
+    audioType: {
+      label: "Audio Type",
+      value: AudioType.STEREO,
+      options: {
+        "Positional Audio": AudioType.POSITIONAL,
+        "Stereo Audio": AudioType.STEREO,
+        "Mono Audio": AudioType.MONO,
+      },
     },
-    random: false,
+    random: { label: "Random Position", value: false },
     interval: { label: "Time Interval", value: 3000, min: 1000, max: 10000 },
     position: { label: "Audio Position", value: { x: 0, y: 0, z: 0 }, step: 0.1 },
     volume: {
@@ -42,7 +47,7 @@ const BoomBox = () => {
       onChange: (v) => positionalAudio.current?.setVolume(v),
     },
     play: button(() => {
-      if(audioType === "positionalAudio") {
+      if (audioType === AudioType.POSITIONAL) {
         positionalAudio.current?.play()
       } else {
         audio.current?.play()
@@ -50,8 +55,7 @@ const BoomBox = () => {
       setPlay(true)
     }),
     pause: button(() => {
-      // 这里如果用useState会保存过失的闭包。
-      if(audioType === "positionalAudio") {
+      if (audioType === AudioType.POSITIONAL) {
         positionalAudio.current?.pause()
       } else {
         audio.current?.pause()
@@ -79,7 +83,7 @@ const BoomBox = () => {
     return () => {
       clearInterval(timer)
     }
-  }, [random, interval, clicks])
+  }, [random, interval, click])
 
   const randomlySetPosition = () => {
     set({
@@ -92,38 +96,27 @@ const BoomBox = () => {
   }
 
   const handleClick = () => {
-    increaseClicks()
+    increaseClick()
     randomlySetPosition()
     increaseScore(calculateScore(clockRef.current.getElapsedTime()))
-    clockRef.current = new THREE.Clock() 
+    clockRef.current = new THREE.Clock()
     clockRef.current.start()
   }
 
   return (
     <>
       <group position={[position.x, position.y, position.z]}>
-        {
-          audioType === 'positionalAudio' && 
+        {audioType === AudioType.POSITIONAL && (
           <PositionalAudio
             ref={positionalAudio}
-            url="./audio/badcat.mp3"
+            url="./audio/piano2.wav"
             distance={1}
             autoplay
             loop
           />
-        }
-        {
-          audioType !== "positionalAudio" && 
-          <Audio 
-            ref={audio}
-          />
-        }
-        <primitive
-          object={boomBox.scene}
-          rotation-y={Math.PI}
-          scale={20}
-          onClick={handleClick}
-        />
+        )}
+        {audioType === AudioType.STEREO && <Audio ref={audio} url="./audio/piano2.wav" />}
+        <primitive object={boomBox.scene} rotation-y={Math.PI} scale={20} onClick={handleClick} />
       </group>
     </>
   )
