@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { AudioType } from "../consts"
+import { AudioType, GameState } from "../constants"
 
 export const useClickStore = create((set) => ({
   click: 0,
@@ -27,4 +27,18 @@ export const useTimeStore = create((set) => ({
 export const useAudioStore = create((set) => ({
   audioType: AudioType.POSITIONAL,
   setAudioType: (type) => set(() => ({ audioType: type}))
+}))
+
+export const useGameStateStore = create((set) => ({
+  gameState: GameState.START,
+  setGameState: (gameState) => set(() => ({ gameState: gameState }))
+}))
+
+export const useUserInfoStore = create((set) => ({
+  username: "",
+  email: "",
+  setUserInfo: (userInfo) => set(() => ({
+    username: userInfo?.username,
+    email: userInfo?.email
+  }))
 }))

@@ -6,7 +6,7 @@ import { useClickStore, useScoreStore, useAudioStore } from "../store/store"
 import * as THREE from "three"
 import { calculateScore } from "../utils"
 import Audio from "./Audio"
-import { AudioType, INTERVAL } from "../consts"
+import { AudioType, INTERVAL } from "../constants"
 
 // BoomBox model bind to positional audio
 const BoomBox = () => {
