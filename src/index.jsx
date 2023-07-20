@@ -20,7 +20,8 @@ const map = [
   { name: "menu", keys: ["M", "m"] },
 ]
 
-const clientId = "191262778626-r0dfcsosplunu635g1mk8gddsr89evj3.apps.googleusercontent.com"
+// const clientId = "191262778626-r0dfcsosplunu635g1mk8gddsr89evj3.apps.googleusercontent.com"
+const clientId = "906152247999-urgeo4b4ht8f5d9aoaogutbjjle5ca5n.apps.googleusercontent.com"
 
 const Intro = () => {
   const [ready, setReady] = useState(false)
