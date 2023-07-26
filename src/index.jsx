@@ -53,7 +53,7 @@ const Intro = () => {
       <GoogleOAuthProvider clientId={clientId}>
         <div className={`fullscreen bg login ${logged ? "logged" : ""}`}>
           <GoogleLogin theme="outline" onSuccess={responseMessage} onError={errorMessage} />
-          <a href="#" className="skip" onClick={() => setLogged(true)}>skip</a>
+          <a href="void:0" className="skip" onClick={() => setLogged(true)}>skip</a>
         </div>
       </GoogleOAuthProvider>
 
@@ -79,7 +79,7 @@ const Intro = () => {
         <Stats />
 
         {/* debug */}
-        <Leva hidden={isDebugMode()} />
+        <Leva hidden={!isDebugMode()} />
     </>
   )
 }
