@@ -5,3 +5,7 @@ export const calculateScore = (elapsedTime) => {
     return Number((3 - elapsedTime).toFixed(2))
 }
 
+export const isDebugMode = () => {
+    return window.location.hash === '#debug'
+}
+

@@ -1,14 +1,16 @@
 import { createRoot } from "react-dom/client"
 import { Canvas } from "@react-three/fiber"
 import { useState } from "react"
-import jwtDecode from 'jwt-decode'
 import { KeyboardControls } from "@react-three/drei"
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google"
+import jwtDecode from 'jwt-decode'
+import { Leva } from "leva"
 import Stats from "./components/Stats.jsx"
 import { useGameStateStore, useUserInfoStore } from "./store/store.js"
 import { GameState } from "./constants/index.js"
 import App from "./App.jsx"
 import "./style/style.css"
+import { isDebugMode } from "./utils/index.js"
 
 const root = createRoot(document.getElementById("root"))
 
@@ -20,7 +22,6 @@ const map = [
   { name: "menu", keys: ["M", "m"] },
 ]
 
-// const clientId = "191262778626-r0dfcsosplunu635g1mk8gddsr89evj3.apps.googleusercontent.com"
 const clientId = "906152247999-urgeo4b4ht8f5d9aoaogutbjjle5ca5n.apps.googleusercontent.com"
 
 const Intro = () => {
@@ -47,34 +48,39 @@ const Intro = () => {
   }
 
   return (
-    <GoogleOAuthProvider clientId={clientId}>
+    <>
       {/* login */}
-      <div className={`fullscreen bg login ${logged ? "logged" : ""}`}>
-        <GoogleLogin theme="outline" onSuccess={responseMessage} onError={errorMessage} />
-        <a href="#" className="skip" onClick={() => setLogged(true)}>skip</a>
-      </div>
+      <GoogleOAuthProvider clientId={clientId}>
+        <div className={`fullscreen bg login ${logged ? "logged" : ""}`}>
+          <GoogleLogin theme="outline" onSuccess={responseMessage} onError={errorMessage} />
+          <a href="#" className="skip" onClick={() => setLogged(true)}>skip</a>
+        </div>
+      </GoogleOAuthProvider>
 
-      {/* fullscreen */}
-      <div className={`fullscreen bg ${ready ? "ready" : ""}`}>
-        <button onClick={handleClick}>Play in VR</button>
-        <button onClick={handleClick}>Play in Non-VR</button>
-      </div>
+        {/* fullscreen */}
+        <div className={`fullscreen bg ${ready ? "ready" : ""}`}>
+          <button onClick={handleClick}>Play in VR</button>
+          <button onClick={handleClick}>Play in Non-VR</button>
+        </div>
 
-      {/* 3D scene */}
-      {ready && (
-        <KeyboardControls map={map}>
-          <Canvas shadows>
-            <App />
-          </Canvas>
-        </KeyboardControls>
-      )}
+        {/* 3D scene */}
+        {ready && (
+          <KeyboardControls map={map}>
+            <Canvas shadows>
+              <App />
+            </Canvas>
+          </KeyboardControls>
+        )}
 
-      {/* crosshair */}
-      <div className="dot"></div>
+        {/* crosshair */}
+        <div className="dot"></div>
 
-      {/* game stats */}
-      <Stats />
-    </GoogleOAuthProvider>
+        {/* game stats */}
+        <Stats />
+
+        {/* debug */}
+        <Leva hidden={isDebugMode()} />
+    </>
   )
 }
 
