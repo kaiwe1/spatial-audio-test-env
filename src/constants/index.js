@@ -13,5 +13,5 @@ export const GameState = {
 }
 
 export const INTERVAL = 3000
-export const ROUND_INTERVAL = 50000
+export const ROUND_INTERVAL = 30000
 export const TOTAL_TIME = 2 * ROUND_INTERVAL

@@ -48,6 +48,12 @@ button {
   opacity: 0;
 }
 
+.skip {
+  font-size: small;
+  margin-top: 16px;
+  color: white;
+}
+
 .bg {
   background: #101010;
 }

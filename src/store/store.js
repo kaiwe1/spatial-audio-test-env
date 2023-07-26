@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { AudioType, GameState } from "../constants"
+import { AudioType, GameState, TOTAL_TIME } from "../constants"
 
 export const useClickStore = create((set) => ({
   click: 0,
@@ -19,8 +19,8 @@ export const useRoundStore = create((set) => ({
 }))
 
 export const useTimeStore = create((set) => ({
-  time: 100,
-  decreaseTime: () => set((state) => ({ time: state.time - 1})),
+  time: TOTAL_TIME / 1000,
+  decreaseTime: () => set((state) => ({ time: state.time - 1 })),
   setTime: (time) => set(() => ({ time }))
 }))
 

@@ -58,13 +58,13 @@ const BoomBox = () => {
         {audioType === AudioType.POSITIONAL && (
           <PositionalAudio
             ref={positionalAudio}
-            url="./audio/piano2.wav"
+            url="./audio/badcat.mp3"
             distance={1}
             autoplay
             loop
           />
         )}
-        {audioType === AudioType.STEREO && <Audio ref={audio} url="./audio/piano2.wav" />}
+        {audioType === AudioType.STEREO && <Audio ref={audio} url="./audio/badcat.mp3" />}
         <primitive object={boomBox.scene} rotation-y={Math.PI} scale={20} onClick={handleClick} />
       </group>
     </>

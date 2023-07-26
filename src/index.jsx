@@ -8,7 +8,7 @@ import Stats from "./components/Stats.jsx"
 import { useGameStateStore, useUserInfoStore } from "./store/store.js"
 import { GameState } from "./constants/index.js"
 import App from "./App.jsx"
-import "./style.css"
+import "./style/style.css"
 
 const root = createRoot(document.getElementById("root"))
 
@@ -51,6 +51,7 @@ const Intro = () => {
       {/* login */}
       <div className={`fullscreen bg login ${logged ? "logged" : ""}`}>
         <GoogleLogin theme="outline" onSuccess={responseMessage} onError={errorMessage} />
+        <a href="#" className="skip" onClick={() => setLogged(true)}>skip</a>
       </div>
 
       {/* fullscreen */}
