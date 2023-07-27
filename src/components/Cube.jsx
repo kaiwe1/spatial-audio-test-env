@@ -1,7 +1,7 @@
 import { useFrame } from "@react-three/fiber"
 import React, { useRef } from "react"
 
-const Cube = () => {
+const Cube = ({ wireframe }) => {
   const cubeRef = useRef()
   
   useFrame((state, delta) => {
@@ -12,7 +12,7 @@ const Cube = () => {
     <>
       <mesh ref={cubeRef} castShadow receiveShadow position={[ -3, 0.1, 0 ]}>
         <boxGeometry />
-        <meshStandardMaterial color="red" />
+        <meshStandardMaterial color="red" wireframe={wireframe} />
       </mesh>
     </>
   )

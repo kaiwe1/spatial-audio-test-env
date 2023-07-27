@@ -46,8 +46,9 @@ const App = () => {
     }
   }, [])
 
-  const { sunPosition } = useControls("App", {
-    sunPosition: { x: 5, y: 5, z: 5 }
+  const { sunPosition, wireframe } = useControls("App", {
+    sunPosition: { x: 5, y: 5, z: 5 },
+    wireframe: false
   })
 
   return (
@@ -60,9 +61,9 @@ const App = () => {
       <BoomBox />
 
       <Physics gravity={[0, -3, 0]}>
-        <Cube />
-        <Sphere />
-        <Ground />
+        <Cube wireframe={wireframe} />
+        <Sphere wireframe={wireframe} />
+        <Ground wireframe={wireframe} />
         <Player />
       </Physics>
 

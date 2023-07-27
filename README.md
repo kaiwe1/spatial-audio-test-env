@@ -2,7 +2,26 @@
 
 Spatial audio virtual testing environment based on **React Three Fiber**
 
-## Get started
+## Getting started
+
+### Install
+
+```
+npm install
+```
+
+### Start
+
+```
+npm start
+```
+
+## Known Issues
+
+- Player will stuck when 1s not move
+- PointerLockControll pops up a uncaught exception when ESCAPE is pressed
+- Switch audio type not destroy original audio
+
 ## Q
 zustand global state management
 rapier physics

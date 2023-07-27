@@ -19,11 +19,12 @@ const BoomBox = () => {
   const increaseClick = useClickStore((state) => state.increaseClick)
   const increaseScore = useScoreStore((state) => state.increaseScore)
   const setAudioType = useAudioStore((state) => state.setAudioType)
+  const audioType = useAudioStore(state => state.audioType)
 
   useHelper(positionalAudio, PositionalAudioHelper)
 
   // debug
-  const [{ position, random, audioType }, set] = useControls("BoomBox", () => ({ 
+  const [{ position, random }, set] = useControls("BoomBox", () => ({ 
     position: { x: 0, y: 0, z: 0 },
     volume: { value: 0.5, min: 0, max: 1, onChange: (v) => positionalAudio.current?.setVolume(v)},
     random: true,
@@ -33,7 +34,9 @@ const BoomBox = () => {
         positional: AudioType.POSITIONAL,
         stereo: AudioType.STEREO,
       },
-      onChange: (v) => setAudioType(v)
+      onChange: (v) => {
+        setAudioType(v)
+      }
     }
   }))
 
@@ -76,6 +79,10 @@ const BoomBox = () => {
     increaseScore(calculateScore(clockRef.current.getElapsedTime()))
     resetClock()
   }
+
+  console.log(positionalAudio)
+  console.log(audioType)
+  console.log(random)
 
   return (
     <>

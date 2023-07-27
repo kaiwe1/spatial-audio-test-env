@@ -1,11 +1,11 @@
 import React from "react"
 
-const Sphere = () => {
+const Sphere = ({ wireframe }) => {
   return (
     <>
       <mesh castShadow receiveShadow position={[ 3, 0, 0 ]}>
         <sphereGeometry />
-        <meshStandardMaterial color="mediumpurple" />
+        <meshStandardMaterial color="mediumpurple" wireframe={wireframe}  />
       </mesh>
     </>
   )
