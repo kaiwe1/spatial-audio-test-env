@@ -25,14 +25,10 @@ const Player = () => {
 
   useFrame((state) => {
     const { forward, backward, left, right, jump } = get()
-
-    console.log("playerRef", ref)
     
     if (ref.current) {
       const velocity = ref.current.linvel()
 
-      console.log("jump", jump)
-      
       // update camera
       const { x, y, z } = ref.current.translation()
       state.camera.position.set(x, y, z)
@@ -55,12 +51,10 @@ const Player = () => {
     }
   })
 
-
-
   return (
     <>
-      <RigidBody ref={ref} colliders={false} mass={1} type='dynamic' position={[0, 2, 2]} enabledRotations={[false, false, false]}>
-        <CapsuleCollider args={[0.25, 0.5]} />
+      <RigidBody ref={ref} colliders={false} mass={1} type='dynamic' position={[0, 0, 2]} enabledRotations={[false, false, false]}>
+        <CapsuleCollider args={[0.5, 0.5]} />
       </RigidBody>
       <Gun ref={gunRef} />
     </>
