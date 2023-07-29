@@ -20,7 +20,17 @@ export const useRoundStore = create((set) => ({
 
 export const useTimeStore = create((set) => ({
   time: TOTAL_TIME / 1000,
-  decreaseTime: () => set((state) => ({ time: state.time - 1 })),
+  decreaseTime: () => set((state) => {
+    if(state.time > 0) {
+      return {
+        time: state.time - 1
+      }
+    } else {
+      return {
+        time: state.time
+      }
+    }
+  }),
   setTime: (time) => set(() => ({ time }))
 }))
 
