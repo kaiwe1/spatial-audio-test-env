@@ -14,7 +14,7 @@ import { useTimeStore, useGameStateStore, useScoreStore, useClickStore, useUserI
 import { getUserStats, sendUserStats } from "./api"
 import { useControls } from "leva"
 
-const App = () => {
+const App = ({ mode }) => {
   const directionalLight = useRef()
   useHelper(directionalLight, DirectionalLightHelper)
   const decreaseTime = useTimeStore(state => state.decreaseTime)
@@ -64,10 +64,10 @@ const App = () => {
         <Cube wireframe={wireframe} />
         <Sphere wireframe={wireframe} />
         <Ground wireframe={wireframe} />
-        <Player />
+        { mode === '3d' && <Player /> }
       </Physics>
 
-      <Menu />
+      { mode === '3d' && <Menu /> }
     </>
   )
 }

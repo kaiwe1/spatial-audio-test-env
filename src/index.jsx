@@ -82,7 +82,7 @@ const Intro = () => {
         <Suspense fallback={<Explanation />}>
           <KeyboardControls map={map}>
             <Canvas shadows>
-              <App />
+              <App mode={mode} />
             </Canvas>
           </KeyboardControls>
         </Suspense>
@@ -94,13 +94,14 @@ const Intro = () => {
           <Canvas shadows>
             <XR>
               <Controllers />
-              <Sky sunPosition={[0, 1, 0]} />
+              {/* <Sky sunPosition={[0, 1, 0]} />
               <ambientLight />
               <pointLight position={[10, 10, 10]} />
               <mesh>
                 <boxGeometry />
                 <meshBasicMaterial color="blue" />
-              </mesh>
+              </mesh> */}
+              <App mode={mode} />
             </XR>
           </Canvas>
         </Suspense>
