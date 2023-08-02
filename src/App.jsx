@@ -2,6 +2,12 @@ import React, { useRef, useEffect } from "react"
 import { PointerLockControls, Sky, useHelper } from "@react-three/drei"
 import { DirectionalLightHelper } from "three"
 import { Physics } from "@react-three/rapier"
+import { GameState, TOTAL_TIME } from "./constants"
+import { useTimeStore, useGameStateStore, useScoreStore, useClickStore, useUserInfoStore } from "./store/store"
+import { getUserStats, sendUserStats } from "./api"
+import { useControls } from "leva"
+import { Perf } from "r3f-perf"
+import { isDebugMode } from "./utils"
 import Menu from "./components/Menu"
 import BoomBox from "./components/BoomBox"
 import Light from "./components/Light"
@@ -9,10 +15,6 @@ import Ground from "./components/Ground"
 import Player from "./components/Player"
 import Cube from "./components/Cube"
 import Sphere from "./components/Sphere"
-import { GameState, TOTAL_TIME } from "./constants"
-import { useTimeStore, useGameStateStore, useScoreStore, useClickStore, useUserInfoStore } from "./store/store"
-import { getUserStats, sendUserStats } from "./api"
-import { useControls } from "leva"
 
 const App = ({ mode }) => {
   const directionalLight = useRef()
@@ -68,6 +70,8 @@ const App = ({ mode }) => {
       </Physics>
 
       { mode === '3d' && <Menu /> }
+
+      { isDebugMode() && <Perf position="bottom-left" /> }
     </>
   )
 }

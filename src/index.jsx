@@ -113,7 +113,7 @@ const Intro = () => {
       {/* game stats */}
       <Stats />
 
-      {/* debug config */}
+      {/* debug */}
       <Leva hidden={!isDebugMode()} />
     </>
   )
