@@ -77,6 +77,9 @@ const Intro = () => {
         <button onClick={() => handleClick("vr")}>Play in VR</button>
       </div>
 
+      {/* game end */}
+      <div className="end"></div>
+
       {/* 3D scene */}
       {ready && mode === "3d" && (
         <Suspense fallback={<Explanation />}>

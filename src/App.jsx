@@ -60,6 +60,7 @@ const App = ({ mode }) => {
       <Sky sunPosition={[sunPosition.x, sunPosition.y, sunPosition.z]} />
       <Light position={sunPosition} ref={directionalLight} />
 
+      {/* Audio Player */}
       <BoomBox />
 
       <Physics gravity={[0, -3, 0]}>

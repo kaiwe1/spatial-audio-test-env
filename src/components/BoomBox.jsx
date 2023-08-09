@@ -8,6 +8,7 @@ import { useClickStore, useScoreStore, useAudioStore } from "../store/store"
 import { calculateScore } from "../utils"
 import { AudioType, INTERVAL, ROUND_INTERVAL } from "../constants"
 import Audio from "./Audio"
+import MonoAudio from "./MonoAudio"
 
 // BoomBox model bind to positional audio
 const BoomBox = () => {
@@ -15,6 +16,7 @@ const BoomBox = () => {
   const clockRef = useRef(new THREE.Clock())
   const positionalAudio = useRef()
   const audio = useRef()
+  const monoAudio = useRef()
   const click = useClickStore((state) => state.click)
   const increaseClick = useClickStore((state) => state.increaseClick)
   const increaseScore = useScoreStore((state) => state.increaseScore)
@@ -26,13 +28,18 @@ const BoomBox = () => {
   // debug
   const [{ position, random }, set] = useControls("BoomBox", () => ({ 
     position: { x: 0, y: 0, z: 0 },
-    volume: { value: 0.5, min: 0, max: 1, onChange: (v) => positionalAudio.current?.setVolume(v)},
+    volume: { value: 0.5, min: 0, max: 1, onChange: (v) => {
+      if(audioType === AudioType.POSITIONAL) positionalAudio.current?.setVolume(v)
+      else if(audioType === AudioType.STEREO) audio.current?.setVolume(v)
+      else if(audioType === AudioType.MONO) monoAudio.current?.setVolume(v)
+    }},
     random: true,
     audioType: { 
       value: AudioType.POSITIONAL,
       options: {
         positional: AudioType.POSITIONAL,
         stereo: AudioType.STEREO,
+        mono: AudioType.MONO,
       },
       onChange: (v) => {
         setAudioType(v)
@@ -50,12 +57,20 @@ const BoomBox = () => {
   }, [click, random])
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer1 = setTimeout(() => {
       setAudioType(AudioType.STEREO)
       set({ audioType: AudioType.STEREO })
     }, ROUND_INTERVAL)
 
-    return () => clearInterval(timer)
+    const timer2 = setTimeout(() => {
+      setAudioType(AudioType.MONO)
+      set({ audioType: AudioType.MONO })
+    }, ROUND_INTERVAL)
+
+    return () => {
+      clearInterval(timer1)
+      clearInterval(timer2)
+    }
   }, [])
 
   const randomlySetPosition = () => {
@@ -80,10 +95,6 @@ const BoomBox = () => {
     resetClock()
   }
 
-  console.log(positionalAudio)
-  console.log(audioType)
-  console.log(random)
-
   return (
     <>
       <group position={[position.x, position.y, position.z]}>
@@ -97,6 +108,7 @@ const BoomBox = () => {
           />
         )}
         {audioType === AudioType.STEREO && <Audio ref={audio} url="./audio/badcat.mp3" />}
+        {audioType === AudioType.MONO && <MonoAudio ref={monoAudio} url="./audio/badcat.mp3" />}
         <primitive object={boomBox.scene} rotation-y={Math.PI} scale={20} onClick={handleClick} />
       </group>
     </>
