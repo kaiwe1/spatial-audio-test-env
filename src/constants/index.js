@@ -12,6 +12,7 @@ export const GameState = {
     END: "end",
 }
 
-export const INTERVAL = 3000
-export const ROUND_INTERVAL = 30000
-export const TOTAL_TIME = 2 * ROUND_INTERVAL
+export const ROUND = 3
+export const INTERVAL = 3000 // change boomBox postion
+export const ROUND_INTERVAL = 3000 // 30s
+export const TOTAL_TIME = ROUND * ROUND_INTERVAL

@@ -15,8 +15,6 @@ const BoomBox = () => {
   const boomBox = useGLTF("./model/BoomBox.glb")
   const clockRef = useRef(new THREE.Clock())
   const positionalAudio = useRef()
-  const audio = useRef()
-  const monoAudio = useRef()
   const click = useClickStore((state) => state.click)
   const increaseClick = useClickStore((state) => state.increaseClick)
   const increaseScore = useScoreStore((state) => state.increaseScore)
@@ -30,8 +28,6 @@ const BoomBox = () => {
     position: { x: 0, y: 0, z: 0 },
     volume: { value: 0.5, min: 0, max: 1, onChange: (v) => {
       if(audioType === AudioType.POSITIONAL) positionalAudio.current?.setVolume(v)
-      else if(audioType === AudioType.STEREO) audio.current?.setVolume(v)
-      else if(audioType === AudioType.MONO) monoAudio.current?.setVolume(v)
     }},
     random: true,
     audioType: { 
@@ -65,7 +61,7 @@ const BoomBox = () => {
     const timer2 = setTimeout(() => {
       setAudioType(AudioType.MONO)
       set({ audioType: AudioType.MONO })
-    }, ROUND_INTERVAL)
+    }, 2 * ROUND_INTERVAL)
 
     return () => {
       clearInterval(timer1)
@@ -106,9 +102,9 @@ const BoomBox = () => {
             autoplay
             loop
           />
-        )}
-        {audioType === AudioType.STEREO && <Audio ref={audio} url="./audio/badcat.mp3" />}
-        {audioType === AudioType.MONO && <MonoAudio ref={monoAudio} url="./audio/badcat.mp3" />}
+        )} 
+        {audioType === AudioType.STEREO && <Audio url="./audio/badcat.mp3" />}
+        {audioType === AudioType.MONO && <MonoAudio url="./audio/badcat.mp3" />}
         <primitive object={boomBox.scene} rotation-y={Math.PI} scale={20} onClick={handleClick} />
       </group>
     </>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { useLoader, useThree } from '@react-three/fiber'
 import * as THREE from "three"
 
@@ -7,19 +7,28 @@ const Audio = React.forwardRef(({ url }, ref) => {
     const [ listener ] = useState(() => new THREE.AudioListener()) // only call in the initial rendering
     const { camera } = useThree()
 
+
+    const defaultRef = useRef()
+    const resolvedRef = ref || defaultRef
+
     useEffect(() => {
+        const audioElement = resolvedRef.current
+
         if(audioBuffer) {
-          ref.current.setBuffer(audioBuffer)
-          ref.current.setLoop(true)
-          ref.current.setVolume( 0.5 );
-          ref.current.play();
+          audioElement.setBuffer(audioBuffer)
+          audioElement.setLoop(true)
+          audioElement.setVolume( 0.5 );
+          audioElement.play();
           camera.add(listener)
         }
-        return () => camera.remove(listener)
+        return () => {
+          audioElement.stop()
+          camera.remove(listener) 
+        }
     }, [audioBuffer])
 
   return (
-    <audio ref={ref} args={[listener]} /> // const sound = new THREE.Audio(Listener), ref.current = sound.
+    <audio ref={resolvedRef} args={[listener]} /> // const sound = new THREE.Audio(Listener), ref.current = sound.
   )
 })
 

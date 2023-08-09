@@ -1,35 +1,41 @@
-import React, { useState, useRef } from "react"
-import { useLoader, useThree } from "@react-three/fiber"
+import { useEffect } from "react"
+import { useLoader } from "@react-three/fiber"
 import * as THREE from "three"
 
-const MonoAudio = React.forwardRef(({ url }, ref) => {
+const MonoAudio = ({ url }) => {
   const audioBuffer = useLoader(THREE.AudioLoader, url)
-
-  const [listener] = useState(() => new THREE.AudioListener()) // only call in the initial rendering
-  const { camera } = useThree()
 
   useEffect(() => {
     if (audioBuffer) {
-        const audioContext = new AudioContext()
-        const audioSource = ref.current
-        audioSource.setBuffer(audioBuffer)
-        audioSource.setLoop(true)
-        audioSource.setVolume(0.5)
-        
-        const channelMerger = audioContext.createChannelMerger(2);
-        const destination = audioContext.destination;
-        audioSource.connect(channelMerger);
-        channelMerger.connect(destination);
+       // 创建一个 AudioBufferSourceNode
+       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+       const source = audioContext.createBufferSource();
+       
+       // 将加载的音频数据附加到 AudioBufferSourceNode
+       source.buffer = audioBuffer;
+ 
+       // 设置单声道输出
+       const channelMerger = audioContext.createChannelMerger(2);
+       channelMerger.channelCount = 1;
+       source.connect(channelMerger);
+ 
+       // 连接到音频输出
+       channelMerger.connect(audioContext.destination);
+ 
+       // 播放音频
+       source.start();
 
-        ref.current.play()
-        camera.add(listener)
+       // 返回函数，在组件销毁时停止播放并清理资源
+      return () => {
+        source.stop();
+        source.disconnect();
+      };
     }
-    return () => camera.remove(listener)
   }, [audioBuffer])
 
   return (
-    <audio ref={ref} args={[listener]} /> // const sound = new THREE.Audio(Listener), ref.current = sound.
+    null
   )
-})
+}
 
 export default MonoAudio
