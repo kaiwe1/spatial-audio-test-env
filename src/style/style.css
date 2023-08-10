@@ -48,6 +48,15 @@ button {
   opacity: 0;
 }
 
+.fullscreen.end {
+  pointer-events: none;
+  opacity: 0;
+}
+
+p {
+  color: white;
+}
+
 .skip {
   font-size: small;
   margin-top: 16px;
@@ -130,8 +139,4 @@ button {
   right: 0%;
   top: 0%;
   margin-right: 24px;
-}
-
-.explanation {
-  
 }

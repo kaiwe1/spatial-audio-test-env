@@ -31,8 +31,6 @@ const App = ({ mode }) => {
   }, [])
 
   useEffect(() => {
-    setGameState(GameState.RUNNING)
-
     const timer = setTimeout(() => {
       setGameState(GameState.END)
       sendUserStats({ username, email, score, click, averageResponseTime: 1.5, minResponseTime: 1 })

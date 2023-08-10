@@ -8,7 +8,6 @@ export const GameState = {
     START: "start",
     LOGGED: "logged",
     READY: "ready",
-    RUNNING: "running",
     END: "end",
 }
 

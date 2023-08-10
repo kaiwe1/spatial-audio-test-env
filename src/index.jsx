@@ -5,7 +5,7 @@ import { KeyboardControls, Sky } from "@react-three/drei"
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google"
 import jwtDecode from "jwt-decode"
 import { Leva } from "leva"
-import { useGameStateStore, useUserInfoStore } from "./store/store.js"
+import { useGameStateStore, useUserInfoStore, useClickStore, useScoreStore } from "./store/store.js"
 import { GameState } from "./constants/index.js"
 import { isDebugMode } from "./utils/index.js"
 import Stats from "./components/Stats.jsx"
@@ -13,6 +13,8 @@ import Explanation from "./components/Explanation.jsx"
 import App from "./App.jsx"
 import "./style/style.css"
 import { Controllers, Hands, VRButton, XR } from "@react-three/xr"
+
+const clientId = "906152247999-urgeo4b4ht8f5d9aoaogutbjjle5ca5n.apps.googleusercontent.com"
 
 const root = createRoot(document.getElementById("root"))
 
@@ -25,15 +27,15 @@ const map = [
   { name: "menu", keys: ["M", "m"] },
 ]
 
-// google login client id
-const clientId = "906152247999-urgeo4b4ht8f5d9aoaogutbjjle5ca5n.apps.googleusercontent.com"
-
 const Intro = () => {
-  const [ready, setReady] = useState(false)
   const [logged, setLogged] = useState(false)
   const [mode, setMode] = useState("")
   const setGameState = useGameStateStore((state) => state.setGameState)
+  const gameState = useGameStateStore((state) => state.gameState)
   const setUserInfo = useUserInfoStore((state) => state.setUserInfo)
+  const username = useUserInfoStore((state) => state.username)
+  const score = useScoreStore((state) => state.score)
+  const click = useClickStore(state => state.click)
 
   const responseMessage = (response) => {
     console.log("success", response)
@@ -49,11 +51,9 @@ const Intro = () => {
 
   const handleClick = (type) => {
     if (type === "3d") {
-      setReady(true)
       setMode("3d")
       setGameState(GameState.READY)
     } else if (type === "vr") {
-      setReady(true)
       setMode("vr")
       setGameState(GameState.READY)
     }
@@ -72,16 +72,22 @@ const Intro = () => {
       </GoogleOAuthProvider>
 
       {/* fullscreen */}
-      <div className={`fullscreen bg ${ready ? "ready" : ""}`}>
+      <div className={`fullscreen bg ${gameState === GameState.READY || gameState === GameState.END ? "ready" : ""}`}>
         <button onClick={() => handleClick("3d")}>Play in 3D</button>
         <button onClick={() => handleClick("vr")}>Play in VR</button>
       </div>
 
       {/* game end */}
-      <div className="end"></div>
+      <div className={`fullscreen bg ${gameState === GameState.END ? "" : "end"}`}>
+        <p>
+          Congrats {username}, you have completed the Spatial Audio Test.
+        </p>
+        <p>Your Score: {score}</p>
+        <p>Your Click: {click}</p>
+      </div>
 
       {/* 3D scene */}
-      {ready && mode === "3d" && (
+      {gameState === GameState.READY && mode === "3d" && (
         <Suspense fallback={<Explanation />}>
           <KeyboardControls map={map}>
             <Canvas shadows>
@@ -91,7 +97,8 @@ const Intro = () => {
         </Suspense>
       )}
 
-      {ready && mode === "vr" && (
+      {/* VR */}
+      {gameState === GameState.READY && mode === "vr" && (
         <Suspense fallback={<Explanation />}>
           <VRButton />
           <Canvas shadows>

@@ -24,7 +24,7 @@ export const getUserStats = async () => {
   try {
     const data = await getDocs(userStatsCollection)
     const filteredData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    console.log(filteredData)
+    console.log('data from firebase:', filteredData)
 
     return filteredData
   } catch (err) {
