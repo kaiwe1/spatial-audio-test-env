@@ -1,8 +1,12 @@
+import { INTERVAL } from "../constants"
+
+const interval_sec = INTERVAL / 1000
+
 export const calculateScore = (elapsedTime) => {
-    if(elapsedTime > 3) {
-        elapsedTime = 3
+    if(elapsedTime > interval_sec) {
+        elapsedTime = interval_sec
     }
-    return Number((3 - elapsedTime).toFixed(2))
+    return Number((interval_sec - elapsedTime).toFixed(2))
 }
 
 export const isDebugMode = () => {

@@ -11,7 +11,7 @@ export const GameState = {
     END: "end",
 }
 
-export const ROUND = 3
-export const INTERVAL = 3000 // change boomBox postion
-export const ROUND_INTERVAL = 3000 // 30s
+export const ROUND = 3 // 3 rounds for positional, stereo, and mono audio
+export const INTERVAL = 3000 // change boomBox position every 3 seconds
+export const ROUND_INTERVAL = 3000 // 30s for a round
 export const TOTAL_TIME = ROUND * ROUND_INTERVAL

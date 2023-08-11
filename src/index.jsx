@@ -14,8 +14,6 @@ import App from "./App.jsx"
 import "./style/style.css"
 import { Controllers, Hands, VRButton, XR } from "@react-three/xr"
 
-const clientId = "906152247999-urgeo4b4ht8f5d9aoaogutbjjle5ca5n.apps.googleusercontent.com"
-
 const root = createRoot(document.getElementById("root"))
 
 const map = [
@@ -62,7 +60,7 @@ const Intro = () => {
   return (
     <>
       {/* login */}
-      <GoogleOAuthProvider clientId={clientId}>
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
         <div className={`fullscreen bg login ${logged ? "logged" : ""}`}>
           <GoogleLogin theme="outline" onSuccess={responseMessage} onError={errorMessage} />
           <a href="void:0" className="skip" onClick={() => setLogged(true)}>
