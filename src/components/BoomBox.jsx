@@ -20,6 +20,7 @@ const BoomBox = () => {
   const increaseScore = useScoreStore((state) => state.increaseScore)
   const setAudioType = useAudioStore((state) => state.setAudioType)
   const audioType = useAudioStore(state => state.audioType)
+  const defaultAudioTypeArr = useAudioStore(state => state.defaultAudioTypeArr)
 
   useHelper(positionalAudio, PositionalAudioHelper)
 
@@ -54,13 +55,13 @@ const BoomBox = () => {
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
-      setAudioType(AudioType.STEREO)
-      set({ audioType: AudioType.STEREO })
+      setAudioType(defaultAudioTypeArr[1])
+      set({ audioType: defaultAudioTypeArr[1] })
     }, ROUND_INTERVAL)
 
     const timer2 = setTimeout(() => {
-      setAudioType(AudioType.MONO)
-      set({ audioType: AudioType.MONO })
+      setAudioType(defaultAudioTypeArr[2])
+      set({ audioType: defaultAudioTypeArr[2] })
     }, 2 * ROUND_INTERVAL)
 
     return () => {
@@ -85,7 +86,7 @@ const BoomBox = () => {
   }
 
   const handleClick = () => {
-    increaseClick()
+    increaseClick(audioType)
     if (random) randomlySetPosition()
     increaseScore(calculateScore(clockRef.current.getElapsedTime()))
     resetClock()

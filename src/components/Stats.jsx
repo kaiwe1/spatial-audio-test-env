@@ -1,5 +1,6 @@
 import React from 'react'
 import { useClickStore, useScoreStore, useRoundStore, useTimeStore, useAudioStore } from "../store/store"
+import { isDebugMode } from '../utils'
 
 const Stats = () => {
   const click = useClickStore((state) => state.click)
@@ -14,7 +15,7 @@ const Stats = () => {
         Click: { click } | Score: { score.toFixed(2) }  
       </div>
       <div className="stats-round">
-        Round: { round } | Type: { audioType }
+        Round: { round } | Type: {isDebugMode() ? audioType : 'hidden' }
       </div>
       <div className="stats-time">
         Time Left: { time }

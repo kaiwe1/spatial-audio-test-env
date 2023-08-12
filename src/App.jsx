@@ -22,7 +22,12 @@ const App = ({ mode }) => {
   const decreaseTime = useTimeStore(state => state.decreaseTime)
   const setGameState = useGameStateStore(state => state.setGameState)
   const score = useScoreStore(state => state.score)
-  const click = useClickStore(state => state.click)
+  const { click, positionalClick, stereoClick, monoClick } = useClickStore(state => ({
+    click: state.click,
+    positionalClick: state.positionalClick,
+    stereoClick: state.stereoClick,
+    monoClick: state.monoClick,
+  }))
   const { username, email } = useUserInfoStore(state => ({ username: state.username, email: state.email }))
 
   // get user stats from firebase
@@ -33,7 +38,7 @@ const App = ({ mode }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setGameState(GameState.END)
-      sendUserStats({ username, email, score, click, averageResponseTime: 1.5, minResponseTime: 1 })
+      sendUserStats({ username, email, score, click, positionalClick, stereoClick, monoClick, averageResponseTime: 1.5, minResponseTime: 1 })
     }, TOTAL_TIME)
 
     const interval = setInterval(() => {

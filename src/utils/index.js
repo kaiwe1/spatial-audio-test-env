@@ -1,4 +1,5 @@
-import { INTERVAL } from "../constants"
+import { AudioType, INTERVAL } from "../constants"
+import { shuffle } from 'lodash-es'
 
 const interval_sec = INTERVAL / 1000
 
@@ -11,5 +12,10 @@ export const calculateScore = (elapsedTime) => {
 
 export const isDebugMode = () => {
     return window.location.hash === '#debug'
+}
+
+export const getRandomAudioTypeArr = () => {
+    const arr = [AudioType.POSITIONAL, AudioType.STEREO, AudioType.MONO]
+    return shuffle(arr)
 }
 

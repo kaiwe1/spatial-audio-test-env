@@ -33,8 +33,12 @@ const Intro = () => {
   const setUserInfo = useUserInfoStore((state) => state.setUserInfo)
   const username = useUserInfoStore((state) => state.username)
   const score = useScoreStore((state) => state.score)
-  const click = useClickStore(state => state.click)
-
+  const { click, positionalClick, stereoClick, monoClick } = useClickStore(state => ({
+    click: state.click,
+    positionalClick: state.positionalClick,
+    stereoClick: state.stereoClick,
+    monoClick: state.monoClick,
+  }))
   const responseMessage = (response) => {
     console.log("success", response)
     if (response.credential) {
@@ -82,6 +86,9 @@ const Intro = () => {
         </p>
         <p>Your Score: {score}</p>
         <p>Your Click: {click}</p>
+        <p>In Positional Audio, Click: {positionalClick}</p>
+        <p>In Stereo Audio, Click: {stereoClick}</p>
+        <p>In Mono Audio, Click: {monoClick}</p>
       </div>
 
       {/* 3D scene */}

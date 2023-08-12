@@ -1,9 +1,36 @@
 import { create } from 'zustand'
 import { AudioType, GameState, TOTAL_TIME } from "../constants"
+import { getRandomAudioTypeArr } from '../utils'
 
 export const useClickStore = create((set) => ({
   click: 0,
-  increaseClick: () => set((state) => ({ click: state.click + 1 })),
+  positionalClick: 0,
+  stereoClick: 0,
+  monoClick: 0,
+  increaseClick: (type='') => set((state) => {
+    const base = {
+      click: state.click + 1
+    }
+
+    if(type === AudioType.POSITIONAL) {
+      return {
+        ...base,
+        positionalClick: state.positionalClick + 1,
+      }
+    } else if (type === AudioType.MONO) { 
+      return ({
+        ...base,
+        monoClick: state.monoClick + 1
+      })
+    } else if (type === AudioType.STEREO) {
+      return ({
+        ...base,
+        stereoClick: state.stereoClick + 1
+      })
+    } else {
+      return base
+    }
+  }),
   removeClick: () => set({ click: 0 }),
 }))
 
@@ -34,9 +61,13 @@ export const useTimeStore = create((set) => ({
   setTime: (time) => set(() => ({ time }))
 }))
 
+// get a random audio type
+const arr = getRandomAudioTypeArr()
+
 export const useAudioStore = create((set) => ({
-  audioType: AudioType.POSITIONAL,
-  setAudioType: (type) => set(() => ({ audioType: type}))
+  defaultAudioTypeArr: arr,
+  audioType: arr[0],
+  setAudioType: (type) => set(() => ({ audioType: type }))
 }))
 
 export const useGameStateStore = create((set) => ({
