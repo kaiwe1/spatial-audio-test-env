@@ -15,7 +15,7 @@ const Stats = () => {
         Click: { click } | Score: { score.toFixed(2) }  
       </div>
       <div className="stats-round">
-        Round: { round } | Type: {isDebugMode() ? audioType : 'hidden' }
+        Round: { round } | Type: {isDebugMode() ? audioType : audioType }
       </div>
       <div className="stats-time">
         Time Left: { time }

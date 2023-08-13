@@ -3,7 +3,7 @@ import { PointerLockControls, Sky, useHelper } from "@react-three/drei"
 import { DirectionalLightHelper } from "three"
 import { Physics } from "@react-three/rapier"
 import { GameState, TOTAL_TIME } from "./constants"
-import { useTimeStore, useGameStateStore, useScoreStore, useClickStore, useUserInfoStore } from "./store/store"
+import { useTimeStore, useGameStateStore, useScoreStore, useClickStore, useUserInfoStore, useResponseTimeStore } from "./store/store"
 import { getUserStats, sendUserStats } from "./api"
 import { useControls } from "leva"
 import { Perf } from "r3f-perf"
@@ -28,6 +28,14 @@ const App = ({ mode }) => {
     stereoClick: state.stereoClick,
     monoClick: state.monoClick,
   }))
+  const { avgPositionalResponseTime, minPositionalResponseTime, avgStereoResponseTime, minStereoResponseTime, avgMonoResponseTime, minMonoResponseTime} = useResponseTimeStore(state => ({
+    avgPositionalResponseTime: state.avgPositionalResponseTime,
+    minPositionalResponseTime: state.minPositionalResponseTime,
+    avgStereoResponseTime: state.avgStereoResponseTime,
+    minStereoResponseTime: state.minStereoResponseTime,
+    avgMonoResponseTime: state.avgMonoResponseTime,
+    minMonoResponseTime: state.minMonoResponseTime,
+  }))
   const { username, email } = useUserInfoStore(state => ({ username: state.username, email: state.email }))
 
   // get user stats from firebase
@@ -38,7 +46,7 @@ const App = ({ mode }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setGameState(GameState.END)
-      sendUserStats({ username, email, score, click, positionalClick, stereoClick, monoClick, averageResponseTime: 1.5, minResponseTime: 1 })
+      sendUserStats({ username, email, score, click, positionalClick, stereoClick, monoClick, avgPositionalResponseTime, minPositionalResponseTime, avgStereoResponseTime, minStereoResponseTime, avgMonoResponseTime, minMonoResponseTime })
     }, TOTAL_TIME)
 
     const interval = setInterval(() => {

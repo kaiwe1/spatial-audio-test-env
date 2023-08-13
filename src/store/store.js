@@ -39,6 +39,39 @@ export const useScoreStore = create((set) => ({
   increaseScore: (num) => set(state => ({ score: state.score + num })),
 }))
 
+export const useResponseTimeStore = create((set) => ({
+  positionalResponseTimeArr: [],
+  avgPositionalResponseTime: 0,
+  minPositionalResponseTime: Number.MAX_SAFE_INTEGER,
+  stereoResponseTimeArr: [],
+  avgStereoResponseTime: 0,
+  minStereoResponseTime: Number.MAX_SAFE_INTEGER,
+  monoResponseTimeArr: [],
+  avgMonoResponseTime: 0,
+  minMonoResponseTime: Number.MAX_SAFE_INTEGER,
+  setResponseTime: (type, responseTime) => set(state => {
+    if(type === AudioType.POSITIONAL) {
+      return ({
+        positionalResponseTimeArr: [...state.positionalResponseTimeArr, responseTime],
+        avgPositionalResponseTime: (state.avgPositionalResponseTime * state.positionalResponseTimeArr.length + responseTime) / (length + 1),
+        minPositionalResponseTime: Math.min(state.minPositionalResponseTime, responseTime)
+      })
+    } else if(type === AudioType.STEREO) {
+      return ({
+        stereoResponseTimeArr: [...state.stereoResponseTimeArr, responseTime],
+        avgStereoResponseTime: (state.avgStereoResponseTime * state.stereoResponseTimeArr.length + responseTime) / (length + 1),
+        minStereoResponseTime: Math.min(state.minStereoResponseTime, responseTime)
+      })
+    } else if(type === AudioType.MONO) {
+      return ({
+        monoResponseTimeArr: [...state.monoResponseTimeArr, responseTime],
+        avgMonoResponseTime: (state.avgMonoResponseTime * state.monoResponseTimeArr.length + responseTime) / (length + 1),
+        minMonoResponseTime: Math.min(state.minMonoResponseTime, responseTime)
+      })
+    }
+  })
+}))
+
 export const useRoundStore = create((set) => ({
   round: 0,
   increaseRound: () => set((state) => ({ round: state.round + 1 })),

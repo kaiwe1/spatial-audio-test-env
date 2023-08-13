@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react"
 import { PositionalAudioHelper } from "three/addons/helpers/PositionalAudioHelper.js"
 import { PositionalAudio, useGLTF, useHelper } from "@react-three/drei"
 import { useControls } from "leva"
-import { useClickStore, useScoreStore, useAudioStore } from "../store/store"
+import { useClickStore, useScoreStore, useAudioStore, useResponseTimeStore } from "../store/store"
 import { calculateScore } from "../utils"
 import { AudioType, INTERVAL, ROUND_INTERVAL } from "../constants"
 import Audio from "./Audio"
@@ -21,6 +21,7 @@ const BoomBox = () => {
   const setAudioType = useAudioStore((state) => state.setAudioType)
   const audioType = useAudioStore(state => state.audioType)
   const defaultAudioTypeArr = useAudioStore(state => state.defaultAudioTypeArr)
+  const setReponseTime = useResponseTimeStore(state => state.setResponseTime)
 
   useHelper(positionalAudio, PositionalAudioHelper)
 
@@ -54,6 +55,7 @@ const BoomBox = () => {
   }, [click, random])
 
   useEffect(() => {
+    console.log(defaultAudioTypeArr)
     const timer1 = setTimeout(() => {
       setAudioType(defaultAudioTypeArr[1])
       set({ audioType: defaultAudioTypeArr[1] })
@@ -88,6 +90,7 @@ const BoomBox = () => {
   const handleClick = () => {
     increaseClick(audioType)
     if (random) randomlySetPosition()
+    setReponseTime(audioType, clockRef.current.getElapsedTime())
     increaseScore(calculateScore(clockRef.current.getElapsedTime()))
     resetClock()
   }

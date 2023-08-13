@@ -146,3 +146,5 @@ dist
 .yarn/build-state.yml
 
 .vercel
+
+.vercel
