@@ -109,8 +109,8 @@ export const useGameStateStore = create((set) => ({
 }))
 
 export const useUserInfoStore = create((set) => ({
-  username: "",
-  email: "",
+  username: "unkonwn",
+  email: "unkonwn",
   setUserInfo: (userInfo) => set(() => ({
     username: userInfo?.username,
     email: userInfo?.email

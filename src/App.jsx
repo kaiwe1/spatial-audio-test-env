@@ -21,6 +21,7 @@ const App = ({ mode }) => {
   useHelper(directionalLight, DirectionalLightHelper)
   const decreaseTime = useTimeStore(state => state.decreaseTime)
   const setGameState = useGameStateStore(state => state.setGameState)
+  const gameState = useGameStateStore(state => state.gameState)
   const score = useScoreStore(state => state.score)
   const { click, positionalClick, stereoClick, monoClick } = useClickStore(state => ({
     click: state.click,
@@ -46,7 +47,6 @@ const App = ({ mode }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setGameState(GameState.END)
-      sendUserStats({ username, email, score, click, positionalClick, stereoClick, monoClick, avgPositionalResponseTime, minPositionalResponseTime, avgStereoResponseTime, minStereoResponseTime, avgMonoResponseTime, minMonoResponseTime })
     }, TOTAL_TIME)
 
     const interval = setInterval(() => {
@@ -58,6 +58,10 @@ const App = ({ mode }) => {
       clearInterval(interval)
     }
   }, [])
+
+  if(gameState === GameState.END) {
+    sendUserStats({ username, email, score, click, positionalClick, stereoClick, monoClick, avgPositionalResponseTime, minPositionalResponseTime, avgStereoResponseTime, minStereoResponseTime, avgMonoResponseTime, minMonoResponseTime })
+  }
 
   const { sunPosition, wireframe } = useControls("App", {
     sunPosition: { x: 5, y: 5, z: 5 },
