@@ -7,7 +7,7 @@ import jwtDecode from "jwt-decode"
 import { Leva } from "leva"
 import { useGameStateStore, useUserInfoStore, useClickStore, useScoreStore } from "./store/store.js"
 import { GameState } from "./constants/index.js"
-import { isDebugMode } from "./utils/index.js"
+import { addHashtagToURL, isDebugMode } from "./utils/index.js"
 import Stats from "./components/Stats.jsx"
 import Explanation from "./components/Explanation.jsx"
 import App from "./App.jsx"
@@ -39,6 +39,8 @@ const Intro = () => {
     stereoClick: state.stereoClick,
     monoClick: state.monoClick,
   }))
+  const [isDebug, setDebug] = useState(isDebugMode())
+
   const responseMessage = (response) => {
     console.log("success", response)
     if (response.credential) {
@@ -54,11 +56,14 @@ const Intro = () => {
   const handleClick = (type) => {
     if (type === "3d") {
       setMode("3d")
-      setGameState(GameState.READY)
     } else if (type === "vr") {
       setMode("vr")
-      setGameState(GameState.READY)
+    } else if (type === 'debug') {
+      setMode("3d")
+      setDebug(true)
+      addHashtagToURL('debug')
     }
+    setGameState(GameState.READY)
   }
 
   return (
@@ -77,6 +82,7 @@ const Intro = () => {
       <div className={`fullscreen bg ${gameState === GameState.READY || gameState === GameState.END ? "ready" : ""}`}>
         <button onClick={() => handleClick("3d")}>Play in 3D</button>
         <button onClick={() => handleClick("vr")}>Play in VR</button>
+        <button onClick={() => handleClick("debug")}>Debug Mode</button>
       </div>
 
       {/* game end */}
@@ -129,7 +135,7 @@ const Intro = () => {
       <Stats />
 
       {/* debug */}
-      <Leva hidden={!isDebugMode()} />
+      <Leva hidden={!isDebug} />
     </>
   )
 }
