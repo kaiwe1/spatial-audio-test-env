@@ -56,6 +56,10 @@ const BoomBox = () => {
 
   useEffect(() => {
     console.log(defaultAudioTypeArr)
+    
+    setAudioType(defaultAudioTypeArr[0])
+    set({ audioType: defaultAudioTypeArr[0] })
+
     const timer1 = setTimeout(() => {
       setAudioType(defaultAudioTypeArr[1])
       set({ audioType: defaultAudioTypeArr[1] })
