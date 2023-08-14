@@ -5,7 +5,7 @@ import { KeyboardControls, Sky } from "@react-three/drei"
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google"
 import jwtDecode from "jwt-decode"
 import { Leva } from "leva"
-import { useGameStateStore, useUserInfoStore, useClickStore, useScoreStore } from "./store/store.js"
+import { useGameStateStore, useUserInfoStore } from "./store/store.js"
 import { GameState } from "./constants/index.js"
 import { addHashtagToURL, isDebugMode } from "./utils/index.js"
 import Stats from "./components/Stats.jsx"
@@ -13,6 +13,7 @@ import Explanation from "./components/Explanation.jsx"
 import App from "./App.jsx"
 import "./style/style.css"
 import { Controllers, Hands, VRButton, XR } from "@react-three/xr"
+import GameEnd from "./components/GameEnd.jsx"
 
 const root = createRoot(document.getElementById("root"))
 
@@ -31,14 +32,7 @@ const Intro = () => {
   const setGameState = useGameStateStore((state) => state.setGameState)
   const gameState = useGameStateStore((state) => state.gameState)
   const setUserInfo = useUserInfoStore((state) => state.setUserInfo)
-  const username = useUserInfoStore((state) => state.username)
-  const score = useScoreStore((state) => state.score)
-  const { click, positionalClick, stereoClick, monoClick } = useClickStore(state => ({
-    click: state.click,
-    positionalClick: state.positionalClick,
-    stereoClick: state.stereoClick,
-    monoClick: state.monoClick,
-  }))
+
   const [isDebug, setDebug] = useState(isDebugMode())
 
   const responseMessage = (response) => {
@@ -86,16 +80,7 @@ const Intro = () => {
       </div>
 
       {/* game end */}
-      <div className={`fullscreen bg ${gameState === GameState.END ? "" : "end"}`}>
-        <p>
-          Congrats {username}, you have completed the Spatial Audio Test.
-        </p>
-        <p>Your Score: {score}</p>
-        <p>Your Click: {click}</p>
-        <p>In Positional Audio, Click: {positionalClick}</p>
-        <p>In Stereo Audio, Click: {stereoClick}</p>
-        <p>In Mono Audio, Click: {monoClick}</p>
-      </div>
+      <GameEnd />
 
       {/* 3D scene */}
       {gameState === GameState.READY && mode === "3d" && (
