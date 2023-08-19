@@ -99,6 +99,10 @@ const BoomBox = () => {
     resetClock()
   }
 
+  const handleMissClick = () => {
+    increaseClick(audioType, true)
+  }
+
   return (
     <>
       <group position={[position.x, position.y, position.z]}>
@@ -113,7 +117,7 @@ const BoomBox = () => {
         )} 
         {audioType === AudioType.STEREO && <Audio url="./audio/badcat.mp3" />}
         {audioType === AudioType.MONO && <MonoAudio url="./audio/badcat.mp3" />}
-        <primitive object={boomBox.scene} rotation-y={Math.PI} scale={20} onClick={handleClick} />
+        <primitive object={boomBox.scene} rotation-y={Math.PI} scale={20} onClick={handleClick} onPointerMissed={handleMissClick} />
       </group>
     </>
   )

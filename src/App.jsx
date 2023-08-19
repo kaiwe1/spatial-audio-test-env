@@ -3,7 +3,14 @@ import { PointerLockControls, Sky, useHelper } from "@react-three/drei"
 import { DirectionalLightHelper } from "three"
 import { Physics } from "@react-three/rapier"
 import { GameState, TOTAL_TIME } from "./constants"
-import { useTimeStore, useGameStateStore, useScoreStore, useClickStore, useUserInfoStore, useResponseTimeStore } from "./store/store"
+import {
+  useTimeStore,
+  useGameStateStore,
+  useScoreStore,
+  useClickStore,
+  useUserInfoStore,
+  useResponseTimeStore,
+} from "./store/store"
 import { getUserStats, sendUserStats } from "./api"
 import { useControls } from "leva"
 import { Perf } from "r3f-perf"
@@ -19,17 +26,37 @@ import Sphere from "./components/Sphere"
 const App = ({ mode }) => {
   const directionalLight = useRef()
   useHelper(directionalLight, DirectionalLightHelper)
-  const decreaseTime = useTimeStore(state => state.decreaseTime)
-  const setGameState = useGameStateStore(state => state.setGameState)
-  const gameState = useGameStateStore(state => state.gameState)
-  const score = useScoreStore(state => state.score)
-  const { click, positionalClick, stereoClick, monoClick } = useClickStore(state => ({
+  const decreaseTime = useTimeStore((state) => state.decreaseTime)
+  const setGameState = useGameStateStore((state) => state.setGameState)
+  const gameState = useGameStateStore((state) => state.gameState)
+  const score = useScoreStore((state) => state.score)
+  const {
+    click,
+    positionalClick,
+    stereoClick,
+    monoClick,
+    missedClick,
+    positionalMissedClick,
+    stereoMissedClick,
+    monoMissedClick,
+  } = useClickStore((state) => ({
     click: state.click,
     positionalClick: state.positionalClick,
     stereoClick: state.stereoClick,
     monoClick: state.monoClick,
+    missedClick: state.missedClick,
+    positionalMissedClick: state.positionalMissedClick,
+    stereoMissedClick: state.stereoMissedClick,
+    monoMissedClick: state.monoMissedClick,
   }))
-  const { avgPositionalResponseTime, minPositionalResponseTime, avgStereoResponseTime, minStereoResponseTime, avgMonoResponseTime, minMonoResponseTime} = useResponseTimeStore(state => ({
+  const {
+    avgPositionalResponseTime,
+    minPositionalResponseTime,
+    avgStereoResponseTime,
+    minStereoResponseTime,
+    avgMonoResponseTime,
+    minMonoResponseTime,
+  } = useResponseTimeStore((state) => ({
     avgPositionalResponseTime: state.avgPositionalResponseTime,
     minPositionalResponseTime: state.minPositionalResponseTime,
     avgStereoResponseTime: state.avgStereoResponseTime,
@@ -37,21 +64,25 @@ const App = ({ mode }) => {
     avgMonoResponseTime: state.avgMonoResponseTime,
     minMonoResponseTime: state.minMonoResponseTime,
   }))
-  const { username, email } = useUserInfoStore(state => ({ username: state.username, email: state.email }))
+  const { username, email } = useUserInfoStore((state) => ({
+    username: state.username,
+    email: state.email,
+  }))
 
   // get user stats from firebase
   useEffect(() => {
     getUserStats()
   }, [])
 
+  // change gameState when time is up.
   useEffect(() => {
     const timer = setTimeout(() => {
       setGameState(GameState.END)
     }, TOTAL_TIME)
 
     const interval = setInterval(() => {
-      decreaseTime();
-    }, 1000);
+      decreaseTime()
+    }, 1000)
 
     return () => {
       clearTimeout(timer)
@@ -59,13 +90,31 @@ const App = ({ mode }) => {
     }
   }, [])
 
-  if(gameState === GameState.END) {
-    sendUserStats({ username, email, score, click, positionalClick, stereoClick, monoClick, avgPositionalResponseTime, minPositionalResponseTime, avgStereoResponseTime, minStereoResponseTime, avgMonoResponseTime, minMonoResponseTime })
+  if (gameState === GameState.END) {
+    sendUserStats({
+      username,
+      email,
+      score,
+      click,
+      positionalClick,
+      stereoClick,
+      monoClick,
+      missedClick,
+      positionalMissedClick,
+      stereoMissedClick,
+      monoMissedClick,
+      avgPositionalResponseTime,
+      minPositionalResponseTime,
+      avgStereoResponseTime,
+      minStereoResponseTime,
+      avgMonoResponseTime,
+      minMonoResponseTime,
+    })
   }
 
   const { sunPosition, wireframe } = useControls("App", {
     sunPosition: { x: 5, y: 5, z: 5 },
-    wireframe: false
+    wireframe: false,
   })
 
   return (
@@ -82,12 +131,12 @@ const App = ({ mode }) => {
         <Cube wireframe={wireframe} />
         <Sphere wireframe={wireframe} />
         <Ground wireframe={wireframe} />
-        { mode === '3d' && <Player /> }
+        {mode === "3d" && <Player />}
       </Physics>
 
-      { mode === '3d' && <Menu /> }
+      {mode === "3d" && <Menu />}
 
-      { isDebugMode() && <Perf position="bottom-left" /> }
+      {isDebugMode() && <Perf position="bottom-left" />}
     </>
   )
 }

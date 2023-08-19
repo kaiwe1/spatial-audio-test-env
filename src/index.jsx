@@ -17,6 +17,7 @@ import GameEnd from "./components/GameEnd.jsx"
 
 const root = createRoot(document.getElementById("root"))
 
+// keyboard control map
 const map = [
   { name: "forward", keys: ["ArrowUp", "w", "W"] },
   { name: "backward", keys: ["ArrowDown", "s", "S"] },

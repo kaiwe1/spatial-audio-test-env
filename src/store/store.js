@@ -7,7 +7,11 @@ export const useClickStore = create((set) => ({
   positionalClick: 0,
   stereoClick: 0,
   monoClick: 0,
-  increaseClick: (type='') => set((state) => {
+  missedClick: 0,
+  positionalMissedClick: 0,
+  stereoMissedClick: 0,
+  monoMissedClick: 0,
+  increaseClick: (type='', missed=false) => set((state) => {
     const base = {
       click: state.click + 1
     }
@@ -16,16 +20,22 @@ export const useClickStore = create((set) => ({
       return {
         ...base,
         positionalClick: state.positionalClick + 1,
+        positionalMissedClick: missed ? state.positionalMissedClick + 1 : state.positionalMissedClick,
+        missedClick: missed ? state.missedClick + 1 : state.missedClick
       }
     } else if (type === AudioType.MONO) { 
       return ({
         ...base,
-        monoClick: state.monoClick + 1
+        monoClick: state.monoClick + 1,
+        monoMissedClick: missed ? state.monoMissedClick + 1 : state.monoMissedClick,
+        missedClick: missed ? state.missedClick + 1 : state.missedClick
       })
     } else if (type === AudioType.STEREO) {
       return ({
         ...base,
-        stereoClick: state.stereoClick + 1
+        stereoClick: state.stereoClick + 1,
+        stereoMissedClick: missed ? state.stereoMissedClick + 1 : state.stereoMissedClick,
+        missedClick: missed ? state.missedClick + 1 : state.missedClick
       })
     } else {
       return base
@@ -36,7 +46,7 @@ export const useClickStore = create((set) => ({
 
 export const useScoreStore = create((set) => ({
   score: 0,
-  increaseScore: (num) => set(state => ({ score: state.score + num })),
+  increaseScore: (num) => set(state => ({ score: Math.round((state.score + num) * 100) / 100 })),
 }))
 
 export const useResponseTimeStore = create((set) => ({
@@ -53,19 +63,19 @@ export const useResponseTimeStore = create((set) => ({
     if(type === AudioType.POSITIONAL) {
       return ({
         positionalResponseTimeArr: [...state.positionalResponseTimeArr, responseTime],
-        avgPositionalResponseTime: (state.avgPositionalResponseTime * state.positionalResponseTimeArr.length + responseTime) / (length + 1),
+        avgPositionalResponseTime: (state.avgPositionalResponseTime * state.positionalResponseTimeArr.length + responseTime) / (state.positionalResponseTimeArr.length + 1),
         minPositionalResponseTime: Math.min(state.minPositionalResponseTime, responseTime)
       })
     } else if(type === AudioType.STEREO) {
       return ({
         stereoResponseTimeArr: [...state.stereoResponseTimeArr, responseTime],
-        avgStereoResponseTime: (state.avgStereoResponseTime * state.stereoResponseTimeArr.length + responseTime) / (length + 1),
+        avgStereoResponseTime: (state.avgStereoResponseTime * state.stereoResponseTimeArr.length + responseTime) / (state.stereoResponseTimeArr.length + 1),
         minStereoResponseTime: Math.min(state.minStereoResponseTime, responseTime)
       })
     } else if(type === AudioType.MONO) {
       return ({
         monoResponseTimeArr: [...state.monoResponseTimeArr, responseTime],
-        avgMonoResponseTime: (state.avgMonoResponseTime * state.monoResponseTimeArr.length + responseTime) / (length + 1),
+        avgMonoResponseTime: (state.avgMonoResponseTime * state.monoResponseTimeArr.length + responseTime) / (state.monoResponseTimeArr.length + 1),
         minMonoResponseTime: Math.min(state.minMonoResponseTime, responseTime)
       })
     }

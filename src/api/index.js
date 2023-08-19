@@ -4,7 +4,25 @@ import { db } from "../config/firebase-config"
 
 const userStatsCollection = collection(db, "user_stats")
 
-export const sendUserStats = async ({  username, email, score, click, positionalClick, stereoClick, monoClick, avgPositionalResponseTime, minPositionalResponseTime, avgStereoResponseTime, minStereoResponseTime, avgMonoResponseTime, minMonoResponseTime }) => {
+export const sendUserStats = async ({  
+  username, 
+  email, 
+  score, 
+  click, 
+  positionalClick, 
+  stereoClick, 
+  monoClick,
+  missedClick,
+  positionalMissedClick,
+  stereoMissedClick,
+  monoMissedClick,
+  avgPositionalResponseTime, 
+  minPositionalResponseTime, 
+  avgStereoResponseTime, 
+  minStereoResponseTime, 
+  avgMonoResponseTime, 
+  minMonoResponseTime 
+}) => {
   try {
     await addDoc(userStatsCollection, {
       username,
@@ -14,6 +32,10 @@ export const sendUserStats = async ({  username, email, score, click, positional
       positionalClick,
       stereoClick,
       monoClick,
+      missedClick,
+      positionalMissedClick,
+      stereoMissedClick,
+      monoMissedClick,
       avgPositionalResponseTime,
       minPositionalResponseTime,
       avgStereoResponseTime,
