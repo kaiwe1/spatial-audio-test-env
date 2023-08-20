@@ -32,7 +32,7 @@ const Player = () => {
       // update camera
       const { x, y, z } = ref.current.translation()
       state.camera.position.set(x, y, z)
-      
+
       // movement
       frontVector.set(0, 0, backward - forward)
       sideVector.set(left - right, 0, 0)

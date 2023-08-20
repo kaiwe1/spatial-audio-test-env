@@ -1,8 +1,9 @@
 import { useEffect } from "react"
 import { useLoader } from "@react-three/fiber"
 import * as THREE from "three"
+import React from 'react'
 
-const MonoAudio = ({ url }) => {
+const MonoAudio = React.forwardRef(({ url }, ref) => {
   const audioBuffer = useLoader(THREE.AudioLoader, url)
 
   useEffect(() => {
@@ -36,6 +37,6 @@ const MonoAudio = ({ url }) => {
   return (
     null
   )
-}
+})
 
 export default MonoAudio

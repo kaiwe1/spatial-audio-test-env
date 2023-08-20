@@ -1,7 +1,7 @@
 import { useState, Suspense } from "react"
 import { createRoot } from "react-dom/client"
 import { Canvas } from "@react-three/fiber"
-import { KeyboardControls, Sky } from "@react-three/drei"
+import { KeyboardControls } from "@react-three/drei"
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google"
 import jwtDecode from "jwt-decode"
 import { Leva } from "leva"
@@ -12,7 +12,7 @@ import Stats from "./components/Stats.jsx"
 import Explanation from "./components/Explanation.jsx"
 import App from "./App.jsx"
 import "./style/style.css"
-import { Controllers, Hands, VRButton, XR } from "@react-three/xr"
+import { Controllers, VRButton, XR } from "@react-three/xr"
 import GameEnd from "./components/GameEnd.jsx"
 
 const root = createRoot(document.getElementById("root"))
@@ -95,19 +95,12 @@ const Intro = () => {
       )}
 
       {/* VR */}
-      {gameState === GameState.READY && mode === "vr" && (
+      {mode === "vr" && (
         <Suspense fallback={<Explanation />}>
           <VRButton />
           <Canvas shadows>
             <XR>
               <Controllers />
-              {/* <Sky sunPosition={[0, 1, 0]} />
-              <ambientLight />
-              <pointLight position={[10, 10, 10]} />
-              <mesh>
-                <boxGeometry />
-                <meshBasicMaterial color="blue" />
-              </mesh> */}
               <App mode={mode} />
             </XR>
           </Canvas>
