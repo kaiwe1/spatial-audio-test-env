@@ -4,7 +4,7 @@ Spatial audio virtual testing environment based on **React Three Fiber**
 
 ## Getting started
 
-### Install
+### Install dependencies
 
 ```
 npm install
@@ -18,40 +18,11 @@ npm start
 
 ## Known Issues
 
-- Player will stuck when 1s not move
+- Player will stuck when 3s not move
 - PointerLockControll pops up a uncaught exception when ESCAPE is pressed
-- Switch audio type not destroy original audio
 
-## Q
-zustand global state management
-rapier physics
-keyboard control to pop up menu and control player movement.
-useTexture
-waveform
-
-## Goals
-
-- VR support (using R3F)
-- Subjective Scoring system (from 1 to 5) reaistic or immersive
-- Other objective Evaluation methods (game, enemy audio cue times kill enemy or quick, react to the environment.  )
-
-like Virtual fly(continious noise)
-
-- mono
-- stereo
-- HRTF
-
-keep simple
-
-## Usage
-
-Start the local development server
-
-```bash
-$ npm run start
-```
-
-## Scene
+## In the future
+### Scene
 
 | Scene | Features | 
 |---------|---------|
@@ -60,13 +31,7 @@ $ npm run start
 | Outdoor | Four audio objects: Tree cutting, ducks, airplane, and birds |
 | Fountain music | Two audio objects: Piano and a fountain |
 
-## HRTF
-
-- Generic binaural HRTFs from SADIE database
-- stereo (web api)
-- Individual HRTFs (extra points)
-
-## Condition
+### Condition
 
 - No elevation
 - Angle offset
