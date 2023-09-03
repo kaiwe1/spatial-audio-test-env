@@ -5,14 +5,14 @@ import { KeyboardControls } from "@react-three/drei"
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google"
 import jwtDecode from "jwt-decode"
 import { Leva } from "leva"
-import { useGameStateStore, useUserInfoStore } from "./store/store.js"
+import { useGameStateStore, useUserInfoStore, useModeStore } from "./store/store.js"
 import { GameState } from "./constants/index.js"
 import { addHashtagToURL, isDebugMode } from "./utils/index.js"
+import { Controllers, VRButton, XR } from "@react-three/xr"
 import Stats from "./components/Stats.jsx"
 import Explanation from "./components/Explanation.jsx"
 import App from "./App.jsx"
 import "./style/style.css"
-import { Controllers, VRButton, XR } from "@react-three/xr"
 import GameEnd from "./components/GameEnd.jsx"
 
 const root = createRoot(document.getElementById("root"))
@@ -33,6 +33,7 @@ const Intro = () => {
   const setGameState = useGameStateStore((state) => state.setGameState)
   const gameState = useGameStateStore((state) => state.gameState)
   const setUserInfo = useUserInfoStore((state) => state.setUserInfo)
+  const setViewMode = useModeStore((state) => state.setMode)
 
   const [isDebug, setDebug] = useState(isDebugMode())
 
@@ -51,10 +52,13 @@ const Intro = () => {
   const handleClick = (type) => {
     if (type === "3d") {
       setMode("3d")
+      setViewMode('3d')
     } else if (type === "vr") {
       setMode("vr")
+      setViewMode('vr')
     } else if (type === 'debug') {
       setMode("3d")
+      setViewMode('3d')
       setDebug(true)
       addHashtagToURL('debug')
     }
@@ -79,9 +83,6 @@ const Intro = () => {
         <button onClick={() => handleClick("vr")}>Play in VR</button>
         <button onClick={() => handleClick("debug")}>Debug Mode</button>
       </div>
-
-      {/* game end */}
-      <GameEnd />
 
       {/* 3D scene */}
       {gameState === GameState.READY && mode === "3d" && (
@@ -112,6 +113,9 @@ const Intro = () => {
 
       {/* game stats */}
       <Stats />
+
+      {/* game end */}
+      <GameEnd />
 
       {/* debug */}
       <Leva hidden={!isDebug} />

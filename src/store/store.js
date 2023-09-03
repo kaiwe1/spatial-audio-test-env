@@ -126,3 +126,8 @@ export const useUserInfoStore = create((set) => ({
     email: userInfo?.email
   }))
 }))
+
+export const useModeStore = create((set) => ({
+  mode: '',
+  setMode: (mode) => set(() => ({ mode: mode }))
+}))

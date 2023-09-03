@@ -4,7 +4,8 @@ import { useEffect, useRef } from "react"
 import { PositionalAudioHelper } from "three/addons/helpers/PositionalAudioHelper.js"
 import { PositionalAudio, useGLTF, useHelper } from "@react-three/drei"
 import { useControls } from "leva"
-import { useClickStore, useScoreStore, useAudioStore, useResponseTimeStore } from "../store/store"
+import { Interactive } from "@react-three/xr"
+import { useClickStore, useScoreStore, useAudioStore, useResponseTimeStore, useModeStore } from "../store/store"
 import { calculateScore } from "../utils"
 import { AudioType, INTERVAL, ROUND_INTERVAL } from "../constants"
 import Audio from "./Audio"
@@ -23,6 +24,7 @@ const BoomBox = () => {
   const audioType = useAudioStore(state => state.audioType)
   const defaultAudioTypeArr = useAudioStore(state => state.defaultAudioTypeArr)
   const setReponseTime = useResponseTimeStore(state => state.setResponseTime)
+  const mode = useModeStore(state => state.mode)
 
   // useHelper(positionalAudio, PositionalAudioHelper)
 
@@ -119,7 +121,14 @@ const BoomBox = () => {
         )} 
         {audioType === AudioType.STEREO && <Audio ref={audio} url="./audio/badcat.mp3" />}
         {audioType === AudioType.MONO && <MonoAudio ref={audio} url="./audio/badcat.mp3" />}
-        <primitive object={boomBox.scene} rotation-y={Math.PI} scale={20} onClick={handleClick} onPointerMissed={handleMissClick} />
+        {mode === '3d' && 
+          <primitive object={boomBox.scene} rotation-y={Math.PI} scale={20} onClick={handleClick} onPointerMissed={handleMissClick} />
+        }
+        {mode === 'vr' &&
+          <Interactive onSelect={handleClick} onSelectMissed={handleMissClick}>
+            <primitive object={boomBox.scene} rotation-y={Math.PI} scale={20} />
+          </Interactive>
+        }
       </group>
     </>
   )
