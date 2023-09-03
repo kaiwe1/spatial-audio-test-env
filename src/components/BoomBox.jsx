@@ -125,7 +125,7 @@ const BoomBox = () => {
           <primitive object={boomBox.scene} rotation-y={Math.PI} scale={20} onClick={handleClick} onPointerMissed={handleMissClick} />
         }
         {mode === 'vr' &&
-          <Interactive onSelect={handleClick} onSelectMissed={handleMissClick}>
+          <Interactive onHover={handleClick}>
             <primitive object={boomBox.scene} rotation-y={Math.PI} scale={20} />
           </Interactive>
         }
